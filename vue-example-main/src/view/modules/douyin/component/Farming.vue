@@ -19,13 +19,17 @@
       <!-- 账号列表 -->
       <div class="account-list">
         <div v-for="(account, index) in accounts" :key="index" class="account-card">
-          <p>任务编号: {{ index + 1 }}</p>
-          <p>ID: {{ account.id }}</p>
-          <p>状态: 
-            <span :class="{ 'status-online': account.status === '正常', 'status-offline': account.status === '掉线' }">
-              {{ account.status }}
-            </span>
-          </p>
+          <img :src="account.avatarUrl" alt="头像" class="account-avatar" />
+          <div class="account-info">
+            <p>任务编号: {{ account.WebDriveID }}</p>
+            <p>标记: {{ account.tmpname }}</p>
+            <p>DouyinID: {{ account.id }}</p>
+            <p>用户名: {{ account.username }}</p>
+            <p>个性签名: {{ account.signature }}</p>
+            <p>订阅量: {{ account.followingCount }}</p>
+            <p>粉丝数: {{ account.fansCount }}</p>
+            <p>获赞数: {{ account.likeCount }}</p>
+          </div>
           <div class="account-actions">
             <button class="primary-btn" @click="publishVideoForAccount(account.id)">发布视频</button>
             <button class="danger-btn" @click="deleteAccount(index)">删除账号管理</button>
@@ -64,55 +68,92 @@
   </template>
   
   <script>
-  import { start } from "../../../../api/douyin.js";
+  import { start, getFarmerInfo, loginForScan } from "../../../../api/douyin.js";
   export default {
     name: "App",
     data() {
       return {
         isModalOpen: false, // 控制弹出框是否显示
         newAccountName: "", // 存储用户输入的新账号名字
-        accounts: [
-          { id: "123456", status: "正常" },
-          { id: "123453", status: "正常" },
-          { id: "123450", status: "掉线" },
-        ], // 存储账号信息
+        accounts: [], // 存储账号信息
+        WebDriveID: 0, //导航id
       };
     },
-    
+  
     mounted() {
       this.getUserDouYinData();
     },
   
-
     methods: {
       /**
-       *  获取抖音用户数据
-       */ 
-      getUserDouYinData(){
-       
+       * 获取抖音用户数据
+       */
+      getUserDouYinData() {
+        // 这里可以加载已有账号的数据
       },
-
-
-      openModal() {
+  
+      async openModal() {
         this.isModalOpen = true;
+
+        //获取二维码准备工作
+        // 启动浏览器
+        await start({
+            name: "tmp",
+            type: 1,
+          }).then((res) => {
+            this.WebDriveID = res.data.data;
+          });
+  
+          // 登入抖音
+          await loginForScan({
+            id: this.WebDriveID,
+          }).then(res=>{
+            
+          });
       },
       closeModal() {
         this.isModalOpen = false;
         this.newAccountName = ""; // 清空输入框
       },
-      confirmAccount() {
+  
+      /**
+       * 确认提交用户
+       * todo: 这里需要改，启动浏览器、登入抖音为A组，
+       *       获取用户的信息   为B组
+       *       点击我输入好了按钮应该只触发B组
+       */
+      async confirmAccount() {
         if (this.newAccountName.trim()) {
-        //   this.accounts.push({
-        //     id: `ID-${Date.now()}`, // 模拟生成唯一 ID
-        //     status: "正常",
-        //   });
-        start({
-            name: this.newAccountName,
-            type: 1
-        }).then(res=>{
-            console.log(res,"res");
-        });
-        //   alert(`新账号添加成功: ${this.newAccountName}`);
+          let info = {
+            tmpname: null,
+            WebDriveID: null,
+            username: null,
+            id: null,
+            signature: null,
+            followingCount: null,
+            fansCount: null,
+            likeCount: null,
+            avatarUrl: null,
+          };
+
+          info.WebDriveID = this.WebDriveID;
+          info.tmpname = this.newAccountName;
+  
+    
+  
+          // 获取用户的信息
+          await getFarmerInfo({ id: info.WebDriveID }).then((res) => {
+            const data = res.data.data;
+            info.username = data.username;
+            info.id = data.id;
+            info.signature = data.signature;
+            info.followingCount = data.followingCount;
+            info.fansCount = data.fansCount;
+            info.likeCount = data.likeCount;
+            info.avatarUrl = data.avatarUrl;
+          });
+  
+          this.accounts.push(info);
           this.closeModal();
         } else {
           alert("请输入账号名字！");
@@ -190,9 +231,25 @@
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
   }
   
-  .account-card p {
+  .account-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .account-info {
+    flex: 1;
+  }
+  
+  .account-info p {
     margin: 5px 0;
     font-size: 14px;
     color: #555;
@@ -296,14 +353,14 @@
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-bottom: 20px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
   }
   
   .example-image {
-    max-width: 100%;
+    width: 200px;
     height: auto;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 10px 0;
   }
   
   .modal-footer {

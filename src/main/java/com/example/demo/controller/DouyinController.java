@@ -88,5 +88,16 @@ public class DouyinController {
         return farmerInfo;
     }
 
+    /**
+     * 获取工作账号列表
+     * @param id
+     * @return
+     */
+    @GetMapping("/getFarmerList")
+    public R getFarmerList(@RequestParam("id")Integer id){
+        R farmerList = dyService.getFarmerList(id);
+        return farmerList;
+    }
+
 
 }

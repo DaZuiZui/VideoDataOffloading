@@ -25,5 +25,13 @@ public interface TempleteService {
      */
     @GetMapping("/getFarmerInfo")
     public R getFarmerInfo(@RequestParam("id")Integer id);
+
+    /**
+     * 获取工作账号列表
+     * @param id
+     * @return
+     */
+    @GetMapping("/getFarmerList")
+    public R getFarmerList(@RequestParam("id")Integer id);
 }
 

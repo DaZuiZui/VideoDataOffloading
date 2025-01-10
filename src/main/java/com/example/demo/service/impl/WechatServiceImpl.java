@@ -11,6 +11,11 @@ public class WechatServiceImpl implements TempleteService {
     }
 
     @Override
+    public R getFarmerList(Integer id) {
+        return null;
+    }
+
+    @Override
     public R publishAVideo(Integer id) {
         return null;
     }

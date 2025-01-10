@@ -16,7 +16,7 @@ public class DataCenter implements Serializable {
      *
      *    name: Name[String]             名字
      *    douyinNumber: Number[Intger]   抖音中国所管理的账号数量
-     *    douyinList:   array[ArrayList] 抖音账号名字列表
+     *    douyinList:   array[FarmerInfo.class] 抖音账号名字列表
      *    tiktokNumber: Number[Intger]   抖音国际所管理的账号数量
      *    blibliNumber: Number[Intger]   哔哩哔哩所管理的账号数量
      *

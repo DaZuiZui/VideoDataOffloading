@@ -2,13 +2,15 @@ package com.example.demo.domain;
 
 import java.io.Serializable;
 
-public class FarmerInfo implements Serializable {
+public class FarmerInfo {
     private String username;      // 用户名
     private String id;      // 抖音号
     private String signature;     // 签名
     private int followingCount;   // 关注数
     private int fansCount;        // 粉丝数
     private int likeCount;        // 获赞数
+    private String avatarUrl;     // 用户头像 URL
+
 
     @Override
     public String toString() {
@@ -91,7 +93,4 @@ public class FarmerInfo implements Serializable {
         this.likeCount = likeCount;
         this.avatarUrl = avatarUrl;
     }
-
-    private String avatarUrl;     // 用户头像 URL
-
 }

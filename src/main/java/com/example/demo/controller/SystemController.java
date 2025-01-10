@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.DataCenter;
+import com.example.demo.domain.FarmerInfo;
 import com.example.demo.domain.R;
 import com.example.demo.util.WebDriverUtils;
 import org.openqa.selenium.WebDriver;
@@ -52,12 +53,10 @@ public class SystemController {
                 a++;
                 DataCenter.map.get(userId).put("douyinNumber",a);
                 //添加到管理账号的名单
-                ArrayList<String> list = (ArrayList<String>) DataCenter.map.get(userId).get("douyinList");
+                ArrayList<FarmerInfo> list = (ArrayList<FarmerInfo>) DataCenter.map.get(userId).get("douyinList");
                 if (list == null ) {
                     list = new ArrayList<>();
                 }
-
-                list.add(name);
                 DataCenter.map.get(userId).put("douyinList",list);
 
                 break;

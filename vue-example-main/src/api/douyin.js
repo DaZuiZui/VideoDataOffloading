@@ -5,6 +5,39 @@
  */
 import http from "@/utils/httpRequest";
 
+ 
+
+
+
+ /**
+ * 开启新的浏览器会话开启新的账户
+ * @param {*} data 
+ * @returns 
+ */
+export function getFarmerInfo(data){
+    return http({
+        url: "/api/douyin/getFarmerInfo",
+        method: "get",
+        params: data
+    })
+}
+
+
+
+/**
+ * 开启新的浏览器会话开启新的账户
+ * @param {*} data 
+ * @returns 
+ */
+export function loginForScan(data){
+    return http({
+        url: "/api/douyin/loginForScan",
+        method: "get",
+        params: data
+    })
+}
+
+
 /**
  * 开启新的浏览器会话开启新的账户
  * @param {*} data 

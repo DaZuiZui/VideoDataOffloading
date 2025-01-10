@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.domain.DataCenter;
 import com.example.demo.domain.FarmerInfo;
 import com.example.demo.domain.R;
 import com.example.demo.service.TempleteService;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @Service
 public class DyServiceImpl implements TempleteService {
+    private static Long userId = 1L;
 
     /**
      * 抖音扫码登入，但是这里有一个问题，如果是正常使用的模式不应该让用户看到机器操作的页面，但是目前扫码是通关在机器的页面扫码，
@@ -217,7 +219,8 @@ public class DyServiceImpl implements TempleteService {
      * @return
      */
     @Override
-    public R getFarmerInfo(Integer id){
+
+    public R getFarmerInfo(@RequestParam("id") Integer id) {
         // 从 WebDriverUtils 工具类获取 WebDriver 实例
         WebDriver webDriver = WebDriverUtils.get(id);
 
@@ -281,20 +284,44 @@ public class DyServiceImpl implements TempleteService {
                 farmerInfo.setLikeCount(0);
             }
 
-            HashMap<String,Object> res = new HashMap<>();
-            res.put("farmerInfo",farmerInfo);
-            // 返回成功结果
-            return R.ok(res);
+            // 7. 获取用户头像 URL
+            try {
+                WebElement avatarElement = webDriver.findElement(By.cssSelector("div.avatar-XoPjK6 img.img-PeynF_"));
+                String avatarUrl = avatarElement.getAttribute("src");
+                farmerInfo.setAvatarUrl(avatarUrl);
+            } catch (Exception e) {
+                farmerInfo.setAvatarUrl("头像获取失败");
+            }
 
+            HashMap<String ,Object> res = new HashMap<>();
+            res.put("farmerInfo",farmerInfo);
+
+            //这里会确保在这里使用的时候已经进行初始化了
+            ArrayList<FarmerInfo> list = (ArrayList<FarmerInfo>) DataCenter.map.get(userId).get("douyinList");
+            list.add(farmerInfo);
+
+            // 返回成功结果
+            return R.ok(farmerInfo);
         } catch (Exception e) {
             // 捕获所有异常并记录日志
             e.printStackTrace();
             return R.ok("获取账号信息失败：" + e.getMessage());
         } finally {
-//            // 关闭 WebDriver，避免资源泄漏
+            // 关闭 WebDriver，避免资源泄漏
 //            if (webDriver != null) {
 //                webDriver.quit();
 //            }
         }
+    }
+
+    /**
+     * 获取工作账号列表
+     * @param id
+     * @return
+     */
+    @Override
+    public R getFarmerList(Integer id) {
+        ArrayList<FarmerInfo> list = (ArrayList<FarmerInfo>) DataCenter.map.get(userId).get("douyinList");
+        return R.ok(list);
     }
 }
