@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
 
 public class WebDriverUtils  {
     public static HashMap<Integer,WebDriver> map = new HashMap<>();
-
-    public static WebDriver create(Integer id){
-
+    public static Integer id = 0;
+    public static HashMap<String,Object> create(){
+        id++;
         //todo 选择浏览器引擎
 
         System.setProperty("webdriver.gecko.driver", "/Users/yangyida/Downloads/geckodriver");
@@ -31,8 +31,10 @@ public class WebDriverUtils  {
 
         map.put(id,driver);
 //        System.err.println("浏览器已启动，加载配置文件：" + userProfilePath);
-
-        return driver;
+        HashMap<String,Object> res = new HashMap<>();
+        res.put("id",id);
+        res.put("obj",driver);
+        return res;
     }
 
     public static WebDriver get(Integer id){

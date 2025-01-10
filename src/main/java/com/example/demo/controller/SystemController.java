@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping("/system")
 public class SystemController {
@@ -16,11 +18,12 @@ public class SystemController {
      *
      * @return
      */
-    @GetMapping("StartWeb")
-    public R startWeb(@RequestParam("id")Integer id){
-        WebDriver webDriver = WebDriverUtils.create(id);
-        webDriver.get("https://example.com");
-        return R.ok("start web");
+    @GetMapping("/StartWeb")
+    public R startWeb(){
+        HashMap<String, Object> map = WebDriverUtils.create();
+        WebDriver obj = (WebDriver) map.get("obj");
+        obj.get("https://example.com");
+        return R.ok("start web for "+map.get("id"));
     }
 
     @GetMapping("/getWebDriveById")
