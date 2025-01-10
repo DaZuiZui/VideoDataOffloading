@@ -35,4 +35,15 @@ public class SystemController {
         return R.ok(webDriver);
     }
 
+    /**
+     * 退出浏览器
+     * @param id
+     * @return
+     */
+    @GetMapping("/quiteWebDrive")
+    public R quiteWebDriver(@RequestParam("id")Integer id){
+        WebDriverUtils.get(id).quit();
+        return R.ok("web driver quited");
+    }
+
 }
