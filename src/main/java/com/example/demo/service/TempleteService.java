@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.R;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface TempleteService {
@@ -15,4 +16,14 @@ public interface TempleteService {
      * @return
      */
     public R getPopularVideos();
+
+
+    /**
+     * 获取账号信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/getFarmerInfo")
+    public R getFarmerInfo(@RequestParam("id")Integer id);
 }
+

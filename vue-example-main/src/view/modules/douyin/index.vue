@@ -57,14 +57,19 @@
           <transition name="fade">
             <DataAnalysis v-if="openTemplate === 3"></DataAnalysis>
           </transition>
+          <transition name="fade">
+            <Readme v-if="openTemplate === 4"></Readme>
+          </transition>
         </div>
       </div>
     </div>
   </template>
   
   <script>
+ 
   import HotList from './component/HotList.vue';
   import Farming from './component/Farming.vue';
+  import Readme from './component/Readme.vue';
   import MainLeft from '../../main-left.vue';
   import Top from '../../main-top.vue';
   import DataAnalysis from './component/DataAnalysis.vue';
@@ -76,11 +81,11 @@
       Farming,
       Top,
       DataAnalysis,
-      MainLeft
+      MainLeft,Readme
     },
     data() {
       return {
-        openTemplate: 0,    // 控制顶部导航内容
+        openTemplate: 4,    // 控制顶部导航内容
         activeLeftNav: 0    // 控制左侧导航内容
       };
     }

@@ -5,11 +5,16 @@
  */
 import http from "@/utils/httpRequest";
 
-export function add(data){
+/**
+ * 开启新的浏览器会话开启新的账户
+ * @param {*} data 
+ * @returns 
+ */
+export function start(data){
     return http({
-        url: "/api/hello/hello",
-        method: "post",
-        data: data
+        url: "/api/system/StartWeb",
+        method: "get",
+        params: data
     })
 }
 
@@ -17,9 +22,9 @@ export function add(data){
  * 获取热门话题
  * @returns 
  */
-export function getUserInfoById(){
+export function getPopularVideos(){
     return http({
-        url: "/douyin/getPopularVideos",
+        url: "/api/douyin/getPopularVideos",
         method: "get",
     })
 }

@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.domain.FarmerInfo;
 import com.example.demo.domain.R;
 import com.example.demo.service.TempleteService;
 import com.example.demo.util.WebDriverUtils;
@@ -10,6 +11,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -185,6 +188,8 @@ public class DyServiceImpl implements TempleteService {
         } catch (Exception e) {
             e.printStackTrace();
             return R.ok("获取热门视频失败：" + e.getMessage());
+        }finally {
+            webDriver.quit();
         }
     }
 
@@ -202,5 +207,94 @@ public class DyServiceImpl implements TempleteService {
 //        WebDriver webDriver = WebDriverUtils.get(id);
 //        webDriver.get("https://creator.douyin.com/creator-micro/creative-guidance?discover_menu=2");
         return null;
+    }
+
+
+
+    /**
+     * 获取账号信息
+     * @param id
+     * @return
+     */
+    @Override
+    public R getFarmerInfo(Integer id){
+        // 从 WebDriverUtils 工具类获取 WebDriver 实例
+        WebDriver webDriver = WebDriverUtils.get(id);
+
+        try {
+            // 目标抖音创作者页面 URL
+            String url = "https://creator.douyin.com/creator-micro/home";
+            webDriver.get(url);
+
+            // 等待页面加载完成，必要时可以改为显式等待
+            Thread.sleep(3000);
+
+            // 实例化返回的 FarmerInfo 对象
+            FarmerInfo farmerInfo = new FarmerInfo();
+
+            // 1. 获取用户名
+            try {
+                WebElement usernameElement = webDriver.findElement(By.cssSelector("div.name-_lSSDc"));
+                farmerInfo.setUsername(usernameElement.getText());
+            } catch (Exception e) {
+                farmerInfo.setUsername("用户名获取失败");
+            }
+
+            // 2. 获取抖音号
+            try {
+                WebElement douyinIdElement = webDriver.findElement(By.cssSelector("div.unique_id-EuH8eA"));
+                String douyinIdText = douyinIdElement.getText().replace("抖音号：", "").trim();
+                farmerInfo.setId(douyinIdText);
+            } catch (Exception e) {
+                farmerInfo.setId("抖音号获取失败");
+            }
+
+            // 3. 获取签名
+            try {
+                WebElement signatureElement = webDriver.findElement(By.cssSelector("div.signature-HLGxt7"));
+                farmerInfo.setSignature(signatureElement.getText());
+            } catch (Exception e) {
+                farmerInfo.setSignature("签名获取失败");
+            }
+
+            // 4. 获取关注数量
+            try {
+                WebElement followingElement = webDriver.findElement(By.cssSelector("div#guide_home_following span.number-No6ev9"));
+                farmerInfo.setFollowingCount(Integer.parseInt(followingElement.getText()));
+            } catch (Exception e) {
+                farmerInfo.setFollowingCount(0);
+            }
+
+            // 5. 获取粉丝数量
+            try {
+                WebElement fansElement = webDriver.findElement(By.cssSelector("div#guide_home_fans span.number-No6ev9"));
+                farmerInfo.setFansCount(Integer.parseInt(fansElement.getText()));
+            } catch (Exception e) {
+                farmerInfo.setFansCount(0);
+            }
+
+            // 6. 获取获赞数量
+            try {
+                WebElement likeElement = webDriver.findElement(By.cssSelector("div.statics-item-MDWoNA span.number-No6ev9"));
+                farmerInfo.setLikeCount(Integer.parseInt(likeElement.getText()));
+            } catch (Exception e) {
+                farmerInfo.setLikeCount(0);
+            }
+
+            HashMap<String,Object> res = new HashMap<>();
+            res.put("farmerInfo",farmerInfo);
+            // 返回成功结果
+            return R.ok(res);
+
+        } catch (Exception e) {
+            // 捕获所有异常并记录日志
+            e.printStackTrace();
+            return R.ok("获取账号信息失败：" + e.getMessage());
+        } finally {
+//            // 关闭 WebDriver，避免资源泄漏
+//            if (webDriver != null) {
+//                webDriver.quit();
+//            }
+        }
     }
 }

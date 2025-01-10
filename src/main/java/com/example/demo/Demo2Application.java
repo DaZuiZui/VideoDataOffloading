@@ -11,6 +11,8 @@ public class Demo2Application {
 
 //        WebDriver driver = new ChromeDriver();
         SpringApplication.run(Demo2Application.class, args);
+        System.err.println("愿圣光保佑你，愿幸运女神永远站在你这边。");
+        System.err.println("May the holy light bless you and may the goddess of luck always be on your side.");
     }
 
 }

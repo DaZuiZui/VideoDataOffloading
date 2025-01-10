@@ -29,7 +29,10 @@
           { label: "Tiktok(⚠️)" },
           { label: "哔哩哔哩(⚠️)" },
           { label: "小红书(⚠️)" },
-          { label: "Youtube(⚠️)" }
+          { label: "Youtube(⚠️)" },
+          { label: "视频资源管理(✅)" },
+          { label: "全平台自动(only Sponsors)" },
+          { label: "技术支持(no free)" },
         ]
       };
     },

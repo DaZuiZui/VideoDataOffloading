@@ -7,20 +7,10 @@ const path = require('path')
 module.exports = {
   dev: {
     proxyTable: {
-      '/api/hello': {
-        target: 'http://192.168.0.109:8001',
+      '/api/**': {
+        target: 'http://127.0.0.1:8080',
         changeOrigin: true,
-        pathRewrite: {
-          '^/api/hello': '/api/hello'
-        }
       },
-      '/api/hi': {  // 这里是一个独立的配置对象
-        target: 'http://192.168.0.109:8005',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api/hi': '/api/hi'
-        }
-      }
     },
  
       
