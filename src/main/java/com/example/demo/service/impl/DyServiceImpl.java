@@ -13,6 +13,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class DyServiceImpl implements TempleteService {
@@ -118,10 +122,65 @@ public class DyServiceImpl implements TempleteService {
         return R.ok("视频发布成功");
     }
 
+    /**
+     * 获取抖音热门视频
+     * 在未来这个可能需要改版，但是目前来说，我需要快点把这个项目做完，暂时这么处理
+     *
+     * @return
+     */
     @Override
-    public R getPopularVideosByDouyinId(Integer id){
+    public R getPopularVideos(){
+        // 获取 WebDriver 实例
+        HashMap<String, Object> map = WebDriverUtils.create();
+        WebDriver webDriver = (WebDriver) map.get("obj");
+        try {
+            // 打开目标页面
+            webDriver.get("https://www.iesdouyin.com/share/billboard/?id=0&utm_source=copy&utm_campaign=client_share&utm_medium=android&app=aweme");
 
-        return R.ok();
+            // 等待页面加载完成
+            WebDriverWait wait = new WebDriverWait(webDriver, 30); // Selenium 3 版本
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("list-container")));
+
+            // 存储热点信息的列表
+            List<Map<String, String>> hotList = new ArrayList<>();
+
+            // 找到包含热点信息的主容器
+            WebElement listContainer = webDriver.findElement(By.className("list-container"));
+
+            // 获取热点标题和热点数量的元素列表
+            List<WebElement> titles = listContainer.findElements(By.cssSelector("span.sentence.nowrap"));
+            List<WebElement> hotValues = listContainer.findElements(By.cssSelector("div.hot-value > div.value"));
+
+            // 确保两个列表的长度相同
+            if (titles.size() != hotValues.size()) {
+                System.out.println("标题和热点数量不匹配！");
+                return R.ok("标题和热点数量不匹配！");
+            }
+
+            // 遍历标题和热点数量，将其存入 Map 并添加到 List 中
+            for (int i = 0; i < titles.size(); i++) {
+                String title = titles.get(i).getText(); // 获取标题文字
+                String hotNumber = hotValues.get(i).getText(); // 获取热点数量文字
+
+                Map<String, String> hotMap = new HashMap<>();
+                hotMap.put("title", title);
+                hotMap.put("hotnumber", hotNumber);
+
+                hotList.add(hotMap);
+            }
+
+            // 输出调试信息
+            for (Map<String, String> hotMap : hotList) {
+                System.out.println("Title: " + hotMap.get("title") + ", Hot Number: " + hotMap.get("hotnumber"));
+            }
+
+            // 返回成功结果
+            return R.ok(hotList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ok("获取热门视频失败：" + e.getMessage());
+        }
     }
 
 

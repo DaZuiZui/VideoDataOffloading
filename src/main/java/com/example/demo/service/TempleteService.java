@@ -12,8 +12,7 @@ public interface TempleteService {
 
     /**
      * 获取热门视频
-     * @param id
      * @return
      */
-    public R getPopularVideosByDouyinId(Integer id);
+    public R getPopularVideos();
 }

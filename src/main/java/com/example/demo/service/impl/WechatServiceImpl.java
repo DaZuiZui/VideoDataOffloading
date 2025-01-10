@@ -20,7 +20,7 @@ public class WechatServiceImpl implements TempleteService {
     }
 
     @Override
-    public R getPopularVideosByDouyinId(Integer id) {
+    public R getPopularVideos() {
         return null;
     }
 }

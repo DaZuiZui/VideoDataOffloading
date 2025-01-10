@@ -34,13 +34,22 @@ public class DouyinController {
         return R.ok();
     }
 
-    @GetMapping()
+    @GetMapping("/getHotTopicByDouyinId")
     public R getHotTopicByDouyinId(@RequestParam("id")Integer id){
 
 
         return R.ok();
     }
 
+    /**
+     * 获取热门视频
+     * @return
+     */
+    @GetMapping("/getPopularVideos")
+    public R getPopularVideos(){
+        R r = dyService.getPopularVideos();
+        return r;
+    }
 
     /**
      * 流水化
@@ -48,9 +57,6 @@ public class DouyinController {
      */
     @GetMapping("/streamlining")
     public R streamlining(){
-
         return R.ok();
     }
-
-
 }
