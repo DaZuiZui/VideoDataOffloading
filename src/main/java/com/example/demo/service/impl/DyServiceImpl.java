@@ -21,6 +21,13 @@ import java.util.Map;
 @Service
 public class DyServiceImpl implements TempleteService {
 
+    /**
+     * 抖音扫码登入，但是这里有一个问题，如果是正常使用的模式不应该让用户看到机器操作的页面，但是目前扫码是通关在机器的页面扫码，
+     * todo 所以在未来，我们需要改进这个方案，将登入二维码传到输客户端让用户在客户端扫码，
+     * todo 如果该账户被风控但是扫码成功后会出现一个接受短信验证码，所以我们还要做风控的处理页面。
+     * @param id
+     * @return
+     */
     @Override
     public R login(Integer id) {
         WebDriver driver = WebDriverUtils.get(id);
@@ -51,7 +58,7 @@ public class DyServiceImpl implements TempleteService {
      * 发布视频，
      *      但是目前有一个问题，就是遇见风控了，需要再次扫码，但是目前我还没有写检测这个风控的逻辑，暂时先放一下。
      *      而且抖音有防机器人检测，如果被检测为机器人那么就会被返回home页面，
-     *          所以需要编写一些随机事件
+     *          todo 所以需要编写一些随机事件去避免机器人检测
      *          或者视频够短足够快，在他没有检测出来就发布（目前采用此方案，但是不可靠，时间紧以后再说）
      * @param id
      * @return
@@ -185,8 +192,9 @@ public class DyServiceImpl implements TempleteService {
 
 
     /**
+     * todo
      * 获取抖音热门话题 通关 当前登入的用户
-     * 在未来这个可能需要改版，但是目前来说，我需要快点把这个项目做完，暂时这么处理
+     * 在未来这个可能需要改版，但是目前来说，我需要快点把这个项目做完，暂时这么处理 但是这么做很麻烦，暂时搁置
      *
      * @param id
      * @return

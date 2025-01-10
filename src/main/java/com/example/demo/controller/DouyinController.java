@@ -2,8 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.R;
 import com.example.demo.service.impl.DyServiceImpl;
-import com.example.demo.util.WebDriverUtils;
-import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +15,11 @@ public class DouyinController {
     @Autowired
     private DyServiceImpl dyService;
 
+    /**
+     * 扫码登入 需要重做
+     * @param id
+     * @return
+     */
     @GetMapping("/loginForScan")
     public R loginForScan(@RequestParam("id")Integer id){
         dyService.login(id);
@@ -36,7 +39,6 @@ public class DouyinController {
 
     @GetMapping("/getHotTopicByDouyinId")
     public R getHotTopicByDouyinId(@RequestParam("id")Integer id){
-
 
         return R.ok();
     }
