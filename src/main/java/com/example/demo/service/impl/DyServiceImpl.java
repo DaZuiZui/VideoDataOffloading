@@ -8,7 +8,11 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 
 @Service
 public class DyServiceImpl implements TempleteService {
@@ -65,25 +69,39 @@ public class DyServiceImpl implements TempleteService {
         System.err.println("已经切换到投稿页面");
 
         try {
-            // 等待页面加载完成（根据页面特性调整等待时间）
+            // 等待页面加载完成
             Thread.sleep(5000);
 
-            // 找到文件上传组件
+            // 上传文件
             WebElement uploadInput = driver.findElement(By.xpath("//input[@type='file']"));
-            System.out.println("找到上传文件组件");
-
-            // 使用 JavaScript 确保文件上传组件可见（如果被隐藏）
             ((JavascriptExecutor) driver).executeScript("arguments[0].style.display = 'block';", uploadInput);
-
-            // 设置文件路径，模拟文件选择
-            String filePath = "/Users/yangyida/Downloads/06从失败中学习，建立韧性.mp4";
+            String filePath = "/Users/yangyida/Documents/testima.mp4";
             uploadInput.sendKeys(filePath);
             System.out.println("文件路径已设置：" + filePath);
 
-            // 检查文件是否上传完成（根据上传完成的标识元素调整）
-            Thread.sleep(10000); // 假定上传需要 10 秒，可根据网络状况调整
+            // 等待文件上传完成
+            Thread.sleep(10000); // 根据实际情况调整等待时间
 
-            System.out.println("文件上传完成");
+            // 在标题输入框中输入 "123"
+            WebElement titleInput = driver.findElement(By.xpath("//input[@placeholder='填写作品标题，为作品获得更多流量']"));
+            titleInput.sendKeys("123");
+            System.out.println("标题已输入：123");
+
+//            // 在简介框中输入 "6666"
+//            WebElement descriptionInput = driver.findElement(By.xpath("//div[@class='zone-container editor-kit-container editor editor-comp-publish notranslate mozilla']"));
+//            ((JavascriptExecutor) driver).executeScript("arguments[0].innerHTML = '<div><span>6666</span></div>';", descriptionInput);
+//            System.out.println("作品简介已输入：6666");
+
+//            // 等待“作品未见异常”提示
+//            WebDriverWait wait = new WebDriverWait(driver, 30);
+//            wait.until(ExpectedConditions.textToBePresentInElementLocated(
+//                    By.xpath("//*[contains(text(),'作品未见异常')]"), "作品未见异常"));
+//            System.out.println("提示：作品未见异常");
+
+            // 点击发布按钮
+            WebElement publishButton = driver.findElement(By.xpath("//button[contains(text(),'发布')]"));
+            publishButton.click();
+            System.out.println("发布按钮已点击");
 
         } catch (Exception e) {
             e.printStackTrace();
