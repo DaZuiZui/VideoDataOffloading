@@ -20,6 +20,11 @@ const mainRouters =
       path: '/userindex',
       name: 'userindex',
       component: resolve=>(require(["@/view/modules/user/index"],resolve))
+    },
+    {
+      path: '/douyin',
+      name: 'douyin',
+      component: resolve=>(require(["@/view/modules/douyin/index"],resolve))
     }
 ]
 

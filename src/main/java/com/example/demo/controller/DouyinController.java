@@ -37,6 +37,11 @@ public class DouyinController {
         return R.ok();
     }
 
+    /**
+     * 获取热门话题
+     * @param id
+     * @return
+     */
     @GetMapping("/getHotTopicByDouyinId")
     public R getHotTopicByDouyinId(@RequestParam("id")Integer id){
 
@@ -45,6 +50,9 @@ public class DouyinController {
 
     /**
      * 获取热门视频
+     * https://www.iesdouyin.com/share/billboard/?id=0&utm_source=copy&utm_campaign=client_share&utm_medium=android&app=aweme
+     * 目前是通关这个网站爬虫获取出来的，但是我不知道这个网站是否为抖音官方网站，大概率是的，
+     * 如果有一天这个网站失效了那么就要参考 getHotTopicByDouyinId 来实现。
      * @return
      */
     @GetMapping("/getPopularVideos")
@@ -54,7 +62,7 @@ public class DouyinController {
     }
 
     /**
-     * 流水化
+     * 抖音流水化工作
      * @return
      */
     @GetMapping("/streamlining")
