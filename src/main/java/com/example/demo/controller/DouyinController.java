@@ -23,9 +23,32 @@ public class DouyinController {
         return R.ok();
     }
 
+    /**
+     * 抖音发布视频
+     * @param id
+     * @return
+     */
     @GetMapping("/publishAVideo")
     public R publishAVideo(@RequestParam("id")Integer id){
         dyService.publishAVideo(id);
+        return R.ok();
+    }
+
+    @GetMapping()
+    public R getHotTopicByDouyinId(@RequestParam("id")Integer id){
+
+
+        return R.ok();
+    }
+
+
+    /**
+     * 流水化
+     * @return
+     */
+    @GetMapping("/streamlining")
+    public R streamlining(){
+
         return R.ok();
     }
 

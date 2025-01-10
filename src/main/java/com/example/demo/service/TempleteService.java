@@ -1,9 +1,19 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.R;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public interface TempleteService {
     public R login(Integer id);
 
     public R publishAVideo(Integer id);
+
+    public R getHotTopicByDouyinId(Integer id);
+
+    /**
+     * 获取热门视频
+     * @param id
+     * @return
+     */
+    public R getPopularVideosByDouyinId(Integer id);
 }

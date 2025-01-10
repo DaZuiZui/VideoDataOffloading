@@ -38,13 +38,17 @@ public class DyServiceImpl implements TempleteService {
         // 在新标签页中打开目标页面
         driver.get("https://creator.douyin.com/");
         System.out.println("已在新标签页中打开页面：https://creator.douyin.com/");
-        return R.ok("scanf this code");
+        return R.ok("scan this code");
     }
 
 
 
     /**
-     * 发布视频
+     * 发布视频，
+     *      但是目前有一个问题，就是遇见风控了，需要再次扫码，但是目前我还没有写检测这个风控的逻辑，暂时先放一下。
+     *      而且抖音有防机器人检测，如果被检测为机器人那么就会被返回home页面，
+     *          所以需要编写一些随机事件
+     *          或者视频够短足够快，在他没有检测出来就发布（目前采用此方案，但是不可靠，时间紧以后再说）
      * @param id
      * @return
      */
@@ -112,5 +116,26 @@ public class DyServiceImpl implements TempleteService {
         }
 
         return R.ok("视频发布成功");
+    }
+
+    @Override
+    public R getPopularVideosByDouyinId(Integer id){
+
+        return R.ok();
+    }
+
+
+    /**
+     * 获取抖音热门话题 通关 当前登入的用户
+     * 在未来这个可能需要改版，但是目前来说，我需要快点把这个项目做完，暂时这么处理
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public R getHotTopicByDouyinId(Integer id) {
+//        WebDriver webDriver = WebDriverUtils.get(id);
+//        webDriver.get("https://creator.douyin.com/creator-micro/creative-guidance?discover_menu=2");
+        return null;
     }
 }
