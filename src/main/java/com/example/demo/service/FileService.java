@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.R;
+import com.example.demo.domain.bo.UploadBO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -8,10 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 public interface FileService {
     /**
      * 上传文件，上传文件后获得他的物理存储路径
-     * @param file
+     * @param uploadBO
      * @return
      */
-    public R upload(MultipartFile file,String remark);
+    public R upload(MultipartFile file,String newName);
 
     /**
      * 去把文件下载下载  做一个下载的功能
