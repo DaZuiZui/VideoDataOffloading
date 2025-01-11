@@ -220,7 +220,7 @@ public class DyServiceImpl implements TempleteService {
      * @return
      */
     @Override
-    public R getFarmerInfo(@RequestParam("id") Integer id) {
+    public R getFarmerInfo(@RequestParam("id") Integer id,@RequestParam("PCID")Integer PCID,@RequestParam("name")String name) {
         // 从 WebDriverUtils 工具类获取 WebDriver 实例
         WebDriver webDriver = WebDriverUtils.get(id);
 
@@ -264,6 +264,9 @@ public class DyServiceImpl implements TempleteService {
             try {
                 WebElement followingElement = webDriver.findElement(By.cssSelector("div#guide_home_following span.number-No6ev9"));
                 farmerInfo.setFollowingCount(Integer.parseInt(followingElement.getText()));
+//                WebElement likeElement = webDriver.findElement(By.xpath("//div[contains(@class, 'statics-item-MDWoNA') and contains(., '获赞')]//span[@class='number-No6ev9']"));
+//                farmerInfo.setLikeCount(Integer.parseInt(likeElement.getText()));
+
             } catch (Exception e) {
                 farmerInfo.setFollowingCount(0);
             }
@@ -278,8 +281,8 @@ public class DyServiceImpl implements TempleteService {
 
             // 6. 获取获赞数量
             try {
-                WebElement likeElement = webDriver.findElement(By.cssSelector("div.statics-item-MDWoNA span.number-No6ev9"));
-                farmerInfo.setLikeCount(Integer.parseInt(likeElement.getText()));
+                WebElement likeElement = webDriver.findElement(By.xpath("//div[contains(text(), '获赞')]/span[@class='number-No6ev9']"));
+                farmerInfo.setLikeCount(Integer.parseInt(likeElement.getText().trim()));
             } catch (Exception e) {
                 farmerInfo.setLikeCount(0);
             }
@@ -293,6 +296,8 @@ public class DyServiceImpl implements TempleteService {
                 farmerInfo.setAvatarUrl("头像获取失败");
             }
 
+            farmerInfo.setPCID(PCID.toString());
+            farmerInfo.setTmpname(name);
             HashMap<String ,Object> res = new HashMap<>();
             res.put("farmerInfo",farmerInfo);
 
@@ -316,6 +321,7 @@ public class DyServiceImpl implements TempleteService {
 
     /**
      * 获取工作账号列表
+     * todo 为null的时候会报错，这里逻辑是有问题的
      * @param id
      * @return
      */

@@ -30,13 +30,10 @@ public class WechatServiceImpl implements TempleteService {
         return null;
     }
 
-    /**
-     * 获取账号信息
-     * @param id
-     * @return
-     */
     @Override
-    public R getFarmerInfo(@RequestParam("id")Integer id){
-        return R.ok();
+    public R getFarmerInfo(Integer id, Integer PCID, String name) {
+        return null;
     }
+
+
 }

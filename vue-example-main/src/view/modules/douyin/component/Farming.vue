@@ -3,11 +3,11 @@
       <!-- 标题和操作按钮 -->
       <div class="header">
         <h1>抖音农田耕种</h1>
-        <span style="color: red;"> <b>通知：</b> 单账号数据分析已经并入作品管理</span>
+        <span style="color: red;"> <b>通知：</b> 单账号数据分析已经并入作品管理 </span>
         <div class="actions">
-          <button class="primary-btn" @click="openModal">开启新的抖音账号进行耕种</button>
-          <button class="danger-btn" @click="clearAccounts">清除所有耕种账户</button>
-          <button class="primary-btn" @click="publishVideo">批量发布视频</button>
+          <button class="primary-btn"   @click="openModal">开启新的抖音账号进行耕种</button>
+          <button class="danger-btn"    @click="clearAccounts">清除所有耕种账户</button>
+          <button class="primary-btn"   @click="publishVideo">批量发布视频</button>
           <button class="secondary-btn" @click="testAccounts">账号状态测试</button>
         </div>
       </div>
@@ -22,8 +22,8 @@
         <div v-for="(account, index) in accounts" :key="index" class="account-card">
           <img :src="account.avatarUrl" alt="头像" class="account-avatar" />
           <div class="account-info">
-            <p>任务编号: {{ account.WebDriveID }}</p>
-            <p>标记: {{ account.tmpname }}</p>
+            <p>任务编号:  {{ account.WebDriveID }}</p>
+            <p>标记:      {{ account.tmpname }}</p>
             <p>DouyinID: {{ account.id }}</p>
             <p>用户名: {{ account.username }}</p>
             <p>个性签名: {{ account.signature }}</p>
@@ -36,7 +36,6 @@
                 <button class="primary-btn" @click="publishVideoForAccount(account.id)">发布视频</button>
                 <button class="primary-btn" >作品管理</button>
                 <button class="primary-btn" >状态监测</button>
- 
                 <button class="danger-btn" @click="deleteAccount(index)">删除</button>
                 <button class="secondary-btn" @click="reloginAccount(account.id)">重新登入</button>
             </div>
@@ -157,7 +156,12 @@
     
   
           // 获取用户的信息
-          await getFarmerInfo({ id: info.WebDriveID }).then((res) => {
+          await getFarmerInfo({ 
+            id: info.WebDriveID,
+            PCID: this.WebDriveID,
+            name: this.newAccountName
+
+        }).then((res) => {
             const data = res.data.data;
             info.username = data.username;
             info.id = data.id;
@@ -165,7 +169,11 @@
             info.followingCount = data.followingCount;
             info.fansCount = data.fansCount;
             info.likeCount = data.likeCount;
+            info.WebDriveID = data.WebDriveID;
+            info.tmpname = data.tmpname;
             info.avatarUrl = data.avatarUrl;
+            info.WebDriveID = this.WebDriveID;
+            info.tmpname = this.newAccountName;
           });
   
           this.accounts.push(info);

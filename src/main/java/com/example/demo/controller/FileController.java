@@ -27,6 +27,10 @@ public class FileController {
         return fileService.downFile(filename);
     }
 
+    /**
+     * 获取用户上传文件列表
+     * @return
+     */
     @GetMapping("/getFileListByUserId")
     public R getFileListByUserId() {
         // 调用服务根据userId查询文件列表

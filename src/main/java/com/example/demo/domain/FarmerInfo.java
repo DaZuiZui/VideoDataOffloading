@@ -10,7 +10,8 @@ public class FarmerInfo {
     private int fansCount;        // 粉丝数
     private int likeCount;        // 获赞数
     private String avatarUrl;     // 用户头像 URL
-
+    private String PCID ;         //导航id
+    private String tmpname;       //标记名字
 
     @Override
     public String toString() {
@@ -22,6 +23,8 @@ public class FarmerInfo {
                 ", fansCount=" + fansCount +
                 ", likeCount=" + likeCount +
                 ", avatarUrl='" + avatarUrl + '\'' +
+                ", PCID='" + PCID + '\'' +
+                ", tmpname='" + tmpname + '\'' +
                 '}';
     }
 
@@ -81,10 +84,26 @@ public class FarmerInfo {
         this.avatarUrl = avatarUrl;
     }
 
+    public String getPCID() {
+        return PCID;
+    }
+
+    public void setPCID(String PCID) {
+        this.PCID = PCID;
+    }
+
+    public String getTmpname() {
+        return tmpname;
+    }
+
+    public void setTmpname(String tmpname) {
+        this.tmpname = tmpname;
+    }
+
     public FarmerInfo() {
     }
 
-    public FarmerInfo(String username, String id, String signature, int followingCount, int fansCount, int likeCount, String avatarUrl) {
+    public FarmerInfo(String username, String id, String signature, int followingCount, int fansCount, int likeCount, String avatarUrl, String PCID, String tmpname) {
         this.username = username;
         this.id = id;
         this.signature = signature;
@@ -92,5 +111,7 @@ public class FarmerInfo {
         this.fansCount = fansCount;
         this.likeCount = likeCount;
         this.avatarUrl = avatarUrl;
+        this.PCID = PCID;
+        this.tmpname = tmpname;
     }
 }

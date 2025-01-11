@@ -24,7 +24,7 @@ public interface TempleteService {
      * @return
      */
     @GetMapping("/getFarmerInfo")
-    public R getFarmerInfo(@RequestParam("id")Integer id);
+    public R getFarmerInfo(Integer id,Integer PCID,String name) ;
 
     /**
      * 获取工作账号列表

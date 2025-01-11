@@ -81,8 +81,8 @@ public class DouyinController {
      * @return
      */
     @GetMapping("/getFarmerInfo")
-    public R getFarmerInfo(@RequestParam("id")Integer id){
-        R farmerInfo = dyService.getFarmerInfo(id);
+    public R getFarmerInfo(@RequestParam("id") Integer id,@RequestParam("PCID")Integer PCID,@RequestParam("name")String name) {
+        R farmerInfo = dyService.getFarmerInfo(id,PCID,name);
 
         return farmerInfo;
     }

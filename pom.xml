@@ -8,6 +8,7 @@
         <version>2.3.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.example</groupId>
     <artifactId>demo2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
