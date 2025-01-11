@@ -21,4 +21,15 @@ public class FileController {
         return fileService.upload(file, remark);
     }
 
+    @PostMapping("/downFile")
+    public R downFile(@RequestParam("filename") String filename) {
+        // 调用服务下载文件
+        return fileService.downFile(filename);
+    }
+
+    @GetMapping("/getFileListByUserId")
+    public R getFileListByUserId() {
+        // 调用服务根据userId查询文件列表
+        return fileService.getFileListByUserId();
+    }
 }
