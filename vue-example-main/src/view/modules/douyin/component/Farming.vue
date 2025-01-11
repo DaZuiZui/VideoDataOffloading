@@ -3,10 +3,11 @@
       <!-- 标题和操作按钮 -->
       <div class="header">
         <h1>抖音农田耕种</h1>
+        <span style="color: red;"> <b>通知：</b> 单账号数据分析已经并入作品管理</span>
         <div class="actions">
           <button class="primary-btn" @click="openModal">开启新的抖音账号进行耕种</button>
           <button class="danger-btn" @click="clearAccounts">清除所有耕种账户</button>
-          <button class="primary-btn" @click="publishVideo">发布视频</button>
+          <button class="primary-btn" @click="publishVideo">批量发布视频</button>
           <button class="secondary-btn" @click="testAccounts">账号状态测试</button>
         </div>
       </div>
@@ -30,11 +31,17 @@
             <p>粉丝数: {{ account.fansCount }}</p>
             <p>获赞数: {{ account.likeCount }}</p>
           </div>
-          <div class="account-actions">
-            <button class="primary-btn" @click="publishVideoForAccount(account.id)">发布视频</button>
-            <button class="danger-btn" @click="deleteAccount(index)">删除账号管理</button>
-            <button class="secondary-btn" @click="reloginAccount(account.id)">重新登入</button>
-          </div>
+          <div> 
+            <div class="account-actions">
+                <button class="primary-btn" @click="publishVideoForAccount(account.id)">发布视频</button>
+                <button class="primary-btn" >作品管理</button>
+                <button class="primary-btn" >状态监测</button>
+ 
+                <button class="danger-btn" @click="deleteAccount(index)">删除</button>
+                <button class="secondary-btn" @click="reloginAccount(account.id)">重新登入</button>
+            </div>
+        </div>
+ 
         </div>
       </div>
   
@@ -68,7 +75,7 @@
   </template>
   
   <script>
-  import { start, getFarmerInfo, loginForScan } from "../../../../api/douyin.js";
+  import { start, getFarmerInfo, loginForScan , getFarmerList } from "../../../../api/douyin.js";
   export default {
     name: "App",
     data() {
@@ -82,9 +89,17 @@
   
     mounted() {
       this.getUserDouYinData();
+      this.getFarmerListFun();
     },
   
+    
     methods: {
+        getFarmerListFun(){
+            console.log("??")
+            getFarmerList().then(res=>{
+                this.accounts = res.data.data;
+            });
+        },  
       /**
        * 获取抖音用户数据
        */
@@ -108,7 +123,7 @@
           await loginForScan({
             id: this.WebDriveID,
           }).then(res=>{
-            
+
           });
       },
       closeModal() {

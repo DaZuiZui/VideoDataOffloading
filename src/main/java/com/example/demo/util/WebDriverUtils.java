@@ -23,7 +23,7 @@ public class WebDriverUtils  {
         options.setBinary(firefoxBinary);
         // 使用已有的 Firefox 配置文件以复用会话
 //        String userProfilePath = "/Users/yangyida/Library/Application Support/Firefox/Profiles/h5tw2jp0.default-release";
-//        FirefoxProfile profile = new FirefoxProfile(new File(userProfilePath));
+//        FirefoxProfile profile = new FirefoxProfile(new FileService(userProfilePath));
 //        options.setProfile(profile);
         WebDriver driver =  new FirefoxDriver(options);
         driver = new FirefoxDriver(options);

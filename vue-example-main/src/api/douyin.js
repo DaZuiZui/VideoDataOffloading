@@ -5,14 +5,14 @@
  */
 import http from "@/utils/httpRequest";
 
- 
+
 
 
 
  /**
  * 开启新的浏览器会话开启新的账户
- * @param {*} data 
- * @returns 
+ * @param {*} data
+ * @returns
  */
 export function getFarmerInfo(data){
     return http({
@@ -26,8 +26,8 @@ export function getFarmerInfo(data){
 
 /**
  * 开启新的浏览器会话开启新的账户
- * @param {*} data 
- * @returns 
+ * @param {*} data
+ * @returns
  */
 export function loginForScan(data){
     return http({
@@ -40,8 +40,8 @@ export function loginForScan(data){
 
 /**
  * 开启新的浏览器会话开启新的账户
- * @param {*} data 
- * @returns 
+ * @param {*} data
+ * @returns
  */
 export function start(data){
     return http({
@@ -53,11 +53,22 @@ export function start(data){
 
 /**
  * 获取热门话题
- * @returns 
+ * @returns
  */
 export function getPopularVideos(){
     return http({
         url: "/api/douyin/getPopularVideos",
+        method: "get",
+    })
+}
+
+
+/**
+ * 获取工作账号列表
+ */
+export function getFarmerList(){
+    return http({
+        url: "/api/douyin/getFarmerList?id=1",
         method: "get",
     })
 }

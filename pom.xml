@@ -21,8 +21,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-
-            <version>3.141.59</version> <!-- 一周不行，一周得拿命干，用这个技术 ，这个发音你来说吧，我发音一股印度味道-->
+            <version>3.141.59</version>
         </dependency>
 
         <dependency>

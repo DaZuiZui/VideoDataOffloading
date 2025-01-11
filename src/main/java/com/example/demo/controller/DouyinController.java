@@ -2,8 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.R;
 import com.example.demo.service.impl.DyServiceImpl;
-import com.example.demo.util.WebDriverUtils;
-import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

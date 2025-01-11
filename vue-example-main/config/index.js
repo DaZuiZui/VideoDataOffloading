@@ -1,5 +1,5 @@
 'use strict'
-// Template version: 1.3.1
+// Template version: user.3.user
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
@@ -12,13 +12,13 @@ module.exports = {
         changeOrigin: true,
       },
     },
- 
-      
- 
+
+
+
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
- 
+
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -28,7 +28,7 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */
@@ -74,5 +74,5 @@ module.exports = {
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report
   },
- 
+
 }

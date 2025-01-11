@@ -12,7 +12,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import java.util.Map;
 
 @Service
 public class DyServiceImpl implements TempleteService {
+
     private static Long userId = 1L;
 
     /**
@@ -215,11 +215,11 @@ public class DyServiceImpl implements TempleteService {
 
     /**
      * 获取账号信息
+     * todo:存在bug，获取喜欢数和关注一样多 需要修复
      * @param id
      * @return
      */
     @Override
-
     public R getFarmerInfo(@RequestParam("id") Integer id) {
         // 从 WebDriverUtils 工具类获取 WebDriver 实例
         WebDriver webDriver = WebDriverUtils.get(id);
@@ -235,7 +235,7 @@ public class DyServiceImpl implements TempleteService {
             // 实例化返回的 FarmerInfo 对象
             FarmerInfo farmerInfo = new FarmerInfo();
 
-            // 1. 获取用户名
+            // user. 获取用户名
             try {
                 WebElement usernameElement = webDriver.findElement(By.cssSelector("div.name-_lSSDc"));
                 farmerInfo.setUsername(usernameElement.getText());

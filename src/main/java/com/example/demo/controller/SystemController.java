@@ -22,7 +22,7 @@ public class SystemController {
      * 有一个性能的问题：一个业务对应一个浏览器，会不会太浪费性能了，我没有时间去处理性能问题了，以后再说
      *
      * type:
-     *    1: 抖音中国
+     *    user: 抖音中国
      *    2：Tiktok
      * name: 名字标识，不重要
      *
@@ -49,7 +49,7 @@ public class SystemController {
                 if (a == null){
                     a = 0L;
                 }
-                //1. 自增账号管理数量
+                //user. 自增账号管理数量
                 a++;
                 DataCenter.map.get(userId).put("douyinNumber",a);
                 //添加到管理账号的名单
