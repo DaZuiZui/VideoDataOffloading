@@ -52,7 +52,7 @@ public class FileServiceImpl implements FileService {
 
         // 拼接完整文件路径
         String newFileName = newName + fileExtension;
-        String fullPath = Paths.get(filePath+"\\"+userId, newFileName).toString();
+        String fullPath = Paths.get(filePath+"/"+userId, newFileName).toString();
 
         try {
             // 保存文件到目标路径
