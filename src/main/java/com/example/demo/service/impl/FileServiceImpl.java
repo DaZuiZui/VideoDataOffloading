@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -66,15 +67,18 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
-    public R downFile(String filename) {
-        String fullPath = Paths.get(filePath + "/"+userId, filename).toString();
+    public R downFile(String filename, HttpServletResponse response) {
+        String fullPath = Paths.get(filePath + "/"+ userId, filename).toString();
         File file = new File(fullPath);
         if (!file.exists()) {
             return R.fail("文件不存在");
         }
 
         try (InputStream inStream = new FileInputStream(file);
-             OutputStream outStream = new FileOutputStream(filePath + "/" + filename)) {
+             OutputStream outStream = response.getOutputStream()) { // 获取响应的输出流
+            // 设置响应头
+            response.setContentType("application/octet-stream"); // 或者根据文件类型设置不同的Content-Type
+            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
 
             byte[] buffer = new byte[1024];
             int bytesRead;
@@ -83,7 +87,7 @@ public class FileServiceImpl implements FileService {
                 outStream.write(buffer, 0, bytesRead);
             }
 
-            return R.ok(outStream);
+            return R.ok("文件下载成功");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -123,4 +127,29 @@ public class FileServiceImpl implements FileService {
 
         return R.ok(fileList);
     }
+
+    @Override
+    public R deleteFile(String filename) {
+        // 构建文件的路径，假设文件存放在某个目录下
+        String filePath2 = Paths.get(filePath + "/"+userId, filename).toString(); // 你可以根据实际路径设置
+
+        // 创建 File 对象
+        File file = new File(filePath2);
+
+        // 检查文件是否存在
+        if (file.exists()) {
+            // 删除文件
+            boolean deleted = file.delete();
+
+            // 如果删除成功
+            if (deleted) {
+                return R.ok("文件删除成功");
+            } else {
+                return R.fail("文件删除失败");
+            }
+        } else {
+            return R.fail("文件不存在");
+        }
+    }
+
 }

@@ -42,3 +42,17 @@ export function getFileListByUserId() {
     method: "get",
   });
 }
+
+/**
+ * 删除
+ */
+export function deleteFile(data) {
+  return http({
+    url: "/api/file/deleteFile",
+    method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    data: data
+  });
+}

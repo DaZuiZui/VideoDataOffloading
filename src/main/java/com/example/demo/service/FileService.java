@@ -5,11 +5,12 @@ import com.example.demo.domain.bo.UploadBO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Service
 public interface FileService {
     /**
      * 上传文件，上传文件后获得他的物理存储路径
-     * @param uploadBO
      * @return
      */
     public R upload(MultipartFile file,String newName);
@@ -19,7 +20,7 @@ public interface FileService {
      * @param filename
      * @return
      */
-    public R downFile(String filename);
+    public R downFile(String filename, HttpServletResponse response);
 
     /**
      * R.ok([{
@@ -31,5 +32,10 @@ public interface FileService {
      */
     public R getFileListByUserId();
 
+    /**
+     * 删除文件
+     * @return
+     */
+    public R deleteFile(String filename);
 
 }
