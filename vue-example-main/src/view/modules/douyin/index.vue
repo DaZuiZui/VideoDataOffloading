@@ -8,8 +8,8 @@
       <div class="main-layout">
             <!-- 左侧导航 -->
             <MainLeft
-            :activeLeftNav="activeLeftNav"
-            @updateActiveNav="activeLeftNav = $event"
+              :activeLeftNav="activeLeftNav"
+              @updateActiveNav="activeLeftNav = $event"
             ></MainLeft>
     
             <!-- 内容区域 -->

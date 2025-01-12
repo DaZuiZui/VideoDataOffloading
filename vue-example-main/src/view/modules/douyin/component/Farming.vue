@@ -189,8 +189,10 @@
             fansCount: null,
             likeCount: null,
             avatarUrl: null,
+            pcid: null,
           };
 
+          info.pcid = this.WebDriveID;
           info.WebDriveID = this.WebDriveID;
           info.tmpname = this.newAccountName;
   
