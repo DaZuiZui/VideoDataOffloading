@@ -168,6 +168,7 @@ public class DyServiceImpl implements TempleteService {
 
             //判断缓存中是否有数据 并且 数据是否超过 5min，未超过直接读值，超过 =》 直接爬取
             if (!hotData.isEmpty() && ((new Date().getTime() - hotData.keySet().iterator().next().getTime()) / (60 * 1000)) < 5) {
+                webDriver.quit();
                 Date uniqueKey = hotData.keySet().iterator().next();
                 hotList = hotData.get(uniqueKey);
                 System.out.println("执行了缓存");
