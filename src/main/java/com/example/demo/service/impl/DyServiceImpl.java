@@ -114,16 +114,16 @@ public class DyServiceImpl implements TempleteService {
 //            System.out.println("提示：作品未见异常");
 
             //模拟人为操作 =》 随机点击页面 体部/页面边缘
-            Random random = new Random();
-            int randomNumber = random.nextInt(2);
-            WebElement body = null;
-            if(randomNumber == 0){
-                body = driver.findElement(By.tagName("body"));
-            } else if (randomNumber == 1) {
-                body = driver.findElement(By.tagName("html"));
-            }
-            body.click();
-            System.out.println("body / html 已点击");
+//            Random random = new Random();
+//            int randomNumber = random.nextInt(2);
+//            WebElement body = null;
+//            if(randomNumber == 0){
+//                body = driver.findElement(By.tagName("body"));
+//            } else if (randomNumber == 1) {
+//                body = driver.findElement(By.tagName("html"));
+//            }
+//            body.click();
+//            System.out.println("body / html 已点击");
 
             // 点击发布按钮
             WebElement publishButton = driver.findElement(By.xpath("//button[contains(text(),'发布')]"));
@@ -337,12 +337,13 @@ public class DyServiceImpl implements TempleteService {
     @Override
     public R getFarmerList(Integer id) {
 
-        ArrayList<FarmerInfo> list = new ArrayList<>();
+//        ArrayList<FarmerInfo> list = new ArrayList<>();
+//
+//        if(!Objects.isNull(DataCenter.map.get(userId).get("douyinList"))){
+//            list = (ArrayList<FarmerInfo>) DataCenter.map.get(userId).get("douyinList");
+//        }
 
-        if(!Objects.isNull(DataCenter.map.get(userId).get("douyinList"))){
-            list = (ArrayList<FarmerInfo>) DataCenter.map.get(userId).get("douyinList");
-        }
-
+        ArrayList<FarmerInfo> list = (ArrayList<FarmerInfo>) DataCenter.map.get(userId).get("douyinList");
         return R.ok(list);
     }
 }
