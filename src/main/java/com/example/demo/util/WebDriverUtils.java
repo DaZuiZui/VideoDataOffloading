@@ -17,12 +17,8 @@ public class WebDriverUtils  {
         id++;
         //todo 选择浏览器引擎
 
-//        System.setProperty("webdriver.gecko.driver", "/Users/yangyida/Downloads/geckodriver");
-//        FirefoxBinary firefoxBinary = new FirefoxBinary(new File("/Applications/Firefox.app/Contents/MacOS/firefox"));
-
-        System.setProperty("webdriver.gecko.driver", "D:\\enviromment\\fixbox-qd\\geckodriver.exe");
-        FirefoxBinary firefoxBinary = new FirefoxBinary(new File("C:\\Program Files\\Mozilla Firefox\\firefox.exe"));
-
+        System.setProperty("webdriver.gecko.driver", "/Users/yangyida/Downloads/geckodriver");
+        FirefoxBinary firefoxBinary = new FirefoxBinary(new File("/Applications/Firefox.app/Contents/MacOS/firefox"));
         FirefoxOptions options = new FirefoxOptions();
         options.setBinary(firefoxBinary);
         // 使用已有的 Firefox 配置文件以复用会话
