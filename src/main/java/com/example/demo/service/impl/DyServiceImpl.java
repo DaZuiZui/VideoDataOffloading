@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
+import static com.example.demo.domain.DataCenter.hotData;
+
 @Service
 public class DyServiceImpl implements TempleteService {
 
@@ -164,35 +166,44 @@ public class DyServiceImpl implements TempleteService {
             // 存储热点信息的列表
             List<Map<String, String>> hotList = new ArrayList<>();
 
-            // 找到包含热点信息的主容器
-            WebElement listContainer = webDriver.findElement(By.className("list-container"));
+            //判断缓存中是否有数据 并且 数据是否超过 5min，未超过直接读值，超过 =》 直接爬取
+            if (!hotData.isEmpty() && ((new Date().getTime() - hotData.keySet().iterator().next().getTime()) / (60 * 1000)) < 5) {
+                Date uniqueKey = hotData.keySet().iterator().next();
+                hotList = hotData.get(uniqueKey);
+            } else {
+                // 找到包含热点信息的主容器
+                WebElement listContainer = webDriver.findElement(By.className("list-container"));
 
-            // 获取热点标题和热点数量的元素列表
-            List<WebElement> titles = listContainer.findElements(By.cssSelector("span.sentence.nowrap"));
-            List<WebElement> hotValues = listContainer.findElements(By.cssSelector("div.hot-value > div.value"));
+                // 获取热点标题和热点数量的元素列表
+                List<WebElement> titles = listContainer.findElements(By.cssSelector("span.sentence.nowrap"));
+                List<WebElement> hotValues = listContainer.findElements(By.cssSelector("div.hot-value > div.value"));
 
-            // 确保两个列表的长度相同
-            if (titles.size() != hotValues.size()) {
-                System.out.println("标题和热点数量不匹配！");
-                return R.ok("标题和热点数量不匹配！");
-            }
+                // 确保两个列表的长度相同
+                if (titles.size() != hotValues.size()) {
+                    System.out.println("标题和热点数量不匹配！");
+                    return R.ok("标题和热点数量不匹配！");
+                }
 
-            // 遍历标题和热点数量，将其存入 Map 并添加到 List 中
-            for (int i = 0; i < titles.size(); i++) {
-                String title = titles.get(i).getText(); // 获取标题文字
-                String hotNumber = hotValues.get(i).getText(); // 获取热点数量文字
+                // 遍历标题和热点数量，将其存入 Map 并添加到 List 中
+                for (int i = 0; i < titles.size(); i++) {
+                    String title = titles.get(i).getText(); // 获取标题文字
+                    String hotNumber = hotValues.get(i).getText(); // 获取热点数量文字
 
-                Map<String, String> hotMap = new HashMap<>();
-                hotMap.put("title", title);
-                hotMap.put("hotnumber", hotNumber);
+                    Map<String, String> hotMap = new HashMap<>();
+                    hotMap.put("title", title);
+                    hotMap.put("hotnumber", hotNumber);
 
-                hotList.add(hotMap);
+                    hotList.add(hotMap);
+                }
             }
 
             // 输出调试信息
             for (Map<String, String> hotMap : hotList) {
                 System.out.println("Title: " + hotMap.get("title") + ", Hot Number: " + hotMap.get("hotnumber"));
             }
+
+            //存入缓存 =》 5min之内直接拿缓存 =》 优化
+            hotData.put(new Date(),hotList);
 
             // 返回成功结果
             return R.ok(hotList);

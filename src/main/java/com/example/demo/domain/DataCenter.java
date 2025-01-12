@@ -1,10 +1,7 @@
 package com.example.demo.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Bryan Yang
@@ -26,4 +23,11 @@ public class DataCenter implements Serializable {
      *
      */
     public static Map<Long, HashMap<String,Object>> map = new HashMap<>();
+
+    /**
+     * key: 时间 =》 比较缓存数据是否超过归档时间
+     * value =》 规定时间前的热门视频
+     */
+    public static Map<Date , List<Map<String, String>>> hotData = new HashMap<>();
+
 }
