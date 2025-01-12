@@ -14,10 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class DyServiceImpl implements TempleteService {
@@ -327,7 +324,13 @@ public class DyServiceImpl implements TempleteService {
      */
     @Override
     public R getFarmerList(Integer id) {
-        ArrayList<FarmerInfo> list = (ArrayList<FarmerInfo>) DataCenter.map.get(userId).get("douyinList");
+
+        ArrayList<FarmerInfo> list = new ArrayList<>();
+
+        if(!Objects.isNull(DataCenter.map.get(userId).get("douyinList"))){
+            list = (ArrayList<FarmerInfo>) DataCenter.map.get(userId).get("douyinList");
+        }
+
         return R.ok(list);
     }
 }
