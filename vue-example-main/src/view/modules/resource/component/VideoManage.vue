@@ -7,21 +7,22 @@
             <!-- 隐藏的文件选择框 -->
             <input type="file" ref="fileInput" @change="handleFileChange" style="display: none" />
 
-            <!-- 自定义上传按钮 -->
-            <button @click="triggerFileInput">上传文件</button>
+            <div class="actions">
+                <!-- 自定义上传按钮 -->
+                <button class="primary-btn" @click="triggerFileInput">上传文件</button>
+            </div>
         </div>
 
         <!-- 文件列表 -->
         <ul class="filelist">
             <li v-for="obj in filelist" :key="obj.title" class="filelist-item">
-                <span class="file-title">文件名：{{ obj.name }}</span>
-                <span class="file-number">文件路径: {{ obj.file }}</span>
-                <button @click="copyPath(obj.file)">复制路径</button>
+                <span class="file-title">{{ obj.name }}</span>
+                <span class="file-number">{{ obj.file }}</span>
+                <button @click="copyPath(obj.file)" class="copy-btn">复制路径</button>
             </li>
         </ul>
     </div>
 </template>
-
 
 <script>
 import { getFileListByUserId, upload } from "../../../../api/resource.js";
@@ -44,7 +45,6 @@ export default {
         // 获取文件列表
         fetchTextList() {
             getFileListByUserId().then((res) => {
-                console.log(res.data.data, "obj");
                 this.filelist = res.data.data;  // 将返回的文件列表保存到 filelist 中
             });
         },
@@ -76,11 +76,9 @@ export default {
 
             // 上传
             upload(formData).then((res) => {
-                console.log(res.data, "文件上传成功");
-                this.fetchTextList(); //更新
+                this.fetchTextList(); //更新文件列表
                 alert("文件上传成功！");
             }).catch((err) => {
-                console.error("文件上传失败：", err);
                 alert("文件上传失败！");
             });
         },
@@ -91,7 +89,6 @@ export default {
                 navigator.clipboard.writeText(path).then(() => {
                     alert('路径已复制到剪贴板！');
                 }).catch(err => {
-                    console.error('复制失败：', err);
                     alert('复制失败，请手动复制！');
                 });
             } else {
@@ -102,48 +99,47 @@ export default {
 };
 </script>
 
-
 <style scoped>
 /* 页面布局和背景样式 */
 .filelist-page {
     font-family: "Arial", sans-serif;
-    background: #f9f9f9;
-    padding: 20px;
-    max-width: 800px;
+    background: #f4f7fc;
+    padding: 30px;
+    max-width: 900px;
     margin: 0 auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* 标题样式 */
 .header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .header h1 {
-    font-size: 24px;
+    font-size: 28px;
     color: #333;
+    margin-bottom: 10px;
 }
 
-.header p {
-    font-size: 14px;
-    color: #555;
-}
-
-.header .refresh-link {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
+/* 上传按钮样式 */
+.primary-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.header .refresh-link:hover {
-    text-decoration: underline;
-    color: #0056b3;
+.primary-btn:hover {
+    background-color: #0056b3;
 }
 
-/* 热度列表样式 */
+/* 文件列表样式 */
 .filelist {
     list-style-type: none;
     padding: 0;
@@ -154,28 +150,57 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    background: #ffffff;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .filelist-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .file-title {
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 18px;
     color: #333;
+    font-weight: bold;
 }
 
 .file-number {
     font-size: 14px;
-    color: #666;
-    font-weight: bold;
+    color: #777;
+    font-weight: normal;
+    margin-left: 10px;
+}
+
+.copy-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.copy-btn:hover {
+    background-color: #218838;
+}
+
+/* 按钮区域样式 */
+.actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.actions .primary-btn {
+    min-width: 160px;
 }
 </style>
