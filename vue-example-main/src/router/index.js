@@ -29,6 +29,11 @@ const mainRouters = [
     path: "/resource",
     name: "resource",
     component: (resolve) => require(["@/view/modules/resource/index"], resolve),
+  },
+  {
+    path: "/help",
+    name: "help",
+    component: (resolve) => require(["@/view/modules/help/index"], resolve),
   }
 ];
 

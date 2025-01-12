@@ -27,6 +27,7 @@ export default {
         { label: "视频资源管理(✅)", route: "/resource" },
         { label: "全平台自动(only Sponsors)", route: "/sponsors" },
         { label: "技术支持(no free)", route: "/support" },
+        { label: "使用说明", route: "/help" },
       ],
       activeNav: 0, // 当前选中的导航索引
     };
