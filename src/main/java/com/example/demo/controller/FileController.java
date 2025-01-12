@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/api/file")
 public class FileController {
@@ -22,9 +24,9 @@ public class FileController {
     }
 
     @PostMapping("/downFile")
-    public R downFile(@RequestParam("filename") String filename) {
+    public R downFile(@RequestParam("filename") String filename, HttpServletResponse response) {
         // 调用服务下载文件
-        return fileService.downFile(filename);
+        return fileService.downFile(filename,response);
     }
 
     /**
@@ -35,5 +37,15 @@ public class FileController {
     public R getFileListByUserId() {
         // 调用服务根据userId查询文件列表
         return fileService.getFileListByUserId();
+    }
+
+    /**
+     * 获取用户上传文件列表
+     * @return
+     */
+    @PostMapping("/deleteFile")
+    public R deleteFile(@RequestParam("filename") String filename) {
+        // 调用服务根据userId查询文件列表
+        return fileService.deleteFile(filename);
     }
 }

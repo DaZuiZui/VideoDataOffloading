@@ -12,6 +12,9 @@
             <div class="content">
                 <!-- 导航区域 -->
                 <div class="nav">
+                    <a href="#" :class="{ active: openTemplate === 4 }" @click.prevent="openTemplate = 4">
+                        使用说明
+                    </a>
                     <a href="#" :class="{ active: openTemplate === 0 }" @click.prevent="openTemplate = 0">
                         视频资源管理
                     </a>
@@ -19,6 +22,9 @@
 
                 <transition name="fade">
                     <VideoManage v-if="openTemplate === 0"></VideoManage>
+                </transition>
+                <transition name="fade">
+                    <Readme v-if="openTemplate === 4"></Readme>
                 </transition>
             </div>
         </div>
@@ -30,17 +36,19 @@
 import MainLeft from '../../main-left.vue';
 import Top from '../../main-top.vue';
 import VideoManage from './component/VideoManage.vue'
+import Readme from './component/readme.vue'
 
 export default {
     name: 'App',
     components: {
         Top,
         MainLeft,
-        VideoManage
+        VideoManage,
+        Readme
     },
     data() {
         return {
-            openTemplate: 0,    // 控制顶部导航内容
+            openTemplate: 4,    // 控制顶部导航内容
             activeLeftNav: 0    // 控制左侧导航内容
         };
     }
