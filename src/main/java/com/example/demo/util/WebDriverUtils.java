@@ -6,18 +6,20 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+//@Component
 public class WebDriverUtils  {
-    @Value("${config.BrowserDriveInfo}")
-    public static String BrowserDriveInfo;
-    @Value("${config.BrowserDrivePath}")
-    public static String BrowserDrivePath;
-    @Value("${config.BrowserPath}")
-    public static String BrowserPath;
+//    @Value("${config.BrowserDriveInfo}")
+    public static String BrowserDriveInfo = "webdriver.gecko.driver";
+//    @Value("${config.BrowserDrivePath}")
+    public static String BrowserDrivePath = "/Users/yangyida/Downloads/geckodriver";
+//    @Value("${config.BrowserPath}")
+    public static String BrowserPath = "/Applications/Firefox.app/Contents/MacOS/firefox";
 
     public static HashMap<Integer,WebDriver> map = new HashMap<>();
     public static Integer id = 0;
@@ -29,10 +31,13 @@ public class WebDriverUtils  {
         FirefoxBinary firefoxBinary = new FirefoxBinary(new File(BrowserPath));
         FirefoxOptions options = new FirefoxOptions();
         options.setBinary(firefoxBinary);
+
         // 使用已有的 Firefox 配置文件以复用会话
 //        String userProfilePath = "/Users/yangyida/Library/Application Support/Firefox/Profiles/h5tw2jp0.default-release";
 //        FirefoxProfile profile = new FirefoxProfile(new FileService(userProfilePath));
 //        options.setProfile(profile);
+
+
         WebDriver driver =  new FirefoxDriver(options);
         driver = new FirefoxDriver(options);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);

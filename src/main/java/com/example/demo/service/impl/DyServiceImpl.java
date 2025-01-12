@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.domain.ApplicationId;
 import com.example.demo.domain.DataCenter;
 import com.example.demo.domain.FarmerInfo;
 import com.example.demo.domain.R;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
-import static com.example.demo.domain.DataCenter.hotData;
 
 @Service
 public class DyServiceImpl implements TempleteService {
@@ -152,27 +152,44 @@ public class DyServiceImpl implements TempleteService {
      */
     @Override
     public R getPopularVideos(){
-        // 获取 WebDriver 实例
-        HashMap<String, Object> map = WebDriverUtils.create();
-        WebDriver webDriver = (WebDriver) map.get("obj");
+
         try {
-            // 打开目标页面
-            webDriver.get("https://www.iesdouyin.com/share/billboard/?id=0&utm_source=copy&utm_campaign=client_share&utm_medium=android&app=aweme");
-
-            // 等待页面加载完成
-            WebDriverWait wait = new WebDriverWait(webDriver, 30); // Selenium 3 版本
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("list-container")));
-
             // 存储热点信息的列表
             List<Map<String, String>> hotList = new ArrayList<>();
 
-            //判断缓存中是否有数据 并且 数据是否超过 5min，未超过直接读值，超过 =》 直接爬取
-            if (!hotData.isEmpty() && ((new Date().getTime() - hotData.keySet().iterator().next().getTime()) / (60 * 1000)) < 5) {
-                webDriver.quit();
-                Date uniqueKey = hotData.keySet().iterator().next();
-                hotList = hotData.get(uniqueKey);
+            boolean cacheToken = false;
+
+            if (DataCenter.HotData.containsKey(ApplicationId.Douyin)) {
+                Date date1 = new Date();
+                Date times = (Date) DataCenter.HotData.get(ApplicationId.Douyin).get("times");
+
+                // 判断时差是否大于等于 2 分钟
+                if ((date1.getTime() - times.getTime()) >= 2 * 60 * 1000) {
+                    System.out.println("两个时间的时差大于或等于 2 分钟");
+                } else {
+                    System.out.println("两个时间的时差小于 2 分钟"+date1+"  and  "+times + "当前时差"+(date1.getTime() - times.getTime()));
+                    cacheToken = true;
+                }
+            }
+
+
+            if ( cacheToken ) {
+                hotList = (List<Map<String, String>>) DataCenter.HotData.get(ApplicationId.Douyin).get("list");
                 System.out.println("执行了缓存");
             } else {
+                // 获取 WebDriver 实例
+                HashMap<String, Object> map = WebDriverUtils.create();
+                WebDriver webDriver = (WebDriver) map.get("obj");
+
+
+                // 打开目标页面
+                webDriver.get("https://www.iesdouyin.com/share/billboard/?id=0&utm_source=copy&utm_campaign=client_share&utm_medium=android&app=aweme");
+
+                // 等待页面加载完成
+                WebDriverWait wait = new WebDriverWait(webDriver, 30); // Selenium 3 版本
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("list-container")));
+
+
                 // 找到包含热点信息的主容器
                 WebElement listContainer = webDriver.findElement(By.className("list-container"));
 
@@ -196,16 +213,16 @@ public class DyServiceImpl implements TempleteService {
                     hotMap.put("hotnumber", hotNumber);
 
                     hotList.add(hotMap);
+
+                    HashMap<String, Object> cacheMap = new HashMap<>();
+                    cacheMap.put("times",new Date());
+                    cacheMap.put("list",hotList);
+                    DataCenter.HotData.put(ApplicationId.Douyin,cacheMap);
                 }
+                webDriver.quit();
             }
 
-            // 输出调试信息
-            for (Map<String, String> hotMap : hotList) {
-                System.out.println("Title: " + hotMap.get("title") + ", Hot Number: " + hotMap.get("hotnumber"));
-            }
 
-            //存入缓存 =》 5min之内直接拿缓存 =》 优化
-            hotData.put(new Date(),hotList);
 
             // 返回成功结果
             return R.ok(hotList);
@@ -213,8 +230,6 @@ public class DyServiceImpl implements TempleteService {
         } catch (Exception e) {
             e.printStackTrace();
             return R.ok("获取热门视频失败：" + e.getMessage());
-        }finally {
-            webDriver.quit();
         }
     }
 

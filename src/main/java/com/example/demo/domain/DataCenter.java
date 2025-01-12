@@ -25,9 +25,27 @@ public class DataCenter implements Serializable {
     public static Map<Long, HashMap<String,Object>> map = new HashMap<>();
 
     /**
-     * key: 时间 =》 比较缓存数据是否超过归档时间
-     * value =》 规定时间前的热门视频
+     * 热点数据
+     * Map : {
+     *     Integer: Number[Intger]
+     *              0 抖音中国
+     *              1 Tiktok
+     *
+     *         get => Map: {
+     *             times: Date[Date time] 时间 基准香港时间，以服务器为准
+     *             list:  array[
+     *                      title: String[String],         标题
+     *                      hotnumber: String[hotnumber]   热度
+     *                  ]              Hot数据
+     *         }
+     * }
      */
-    public static Map<Date , List<Map<String, String>>> hotData = new HashMap<>();
+    public static Map<Integer, HashMap<String,Object>> HotData =new HashMap<>();
+//
+//    /**
+//     * key: 时间 =》 比较缓存数据是否超过归档时间
+//     * value =》 规定时间前的热门视频
+//     */
+//    public static Map<Date , List<Map<String, String>>> hotData = new HashMap<>();
 
 }

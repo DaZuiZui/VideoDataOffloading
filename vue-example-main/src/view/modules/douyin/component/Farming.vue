@@ -9,6 +9,7 @@
           <button class="danger-btn"    @click="clearAccounts">清除所有耕种账户</button>
           <button class="primary-btn"   @click="publishVideo">批量发布视频</button>
           <button class="secondary-btn" @click="testAccounts">账号状态测试</button>
+          <button class="secondary-btn"  >消息列表</button>
         </div>
       </div>
   
@@ -36,6 +37,7 @@
                 <button class="primary-btn" @click="uploadByWebdrive(account.pcid,account.id)">发布视频</button>
                 <button class="primary-btn" >作品管理</button>
                 <button class="primary-btn" >状态监测</button>
+                <button class="primary-btn" >消息</button>
                 <button class="danger-btn" @click="deleteAccount(index)">删除</button>
                 <button class="secondary-btn" @click="reloginAccount(account.id)">重新登入</button>
             </div>
