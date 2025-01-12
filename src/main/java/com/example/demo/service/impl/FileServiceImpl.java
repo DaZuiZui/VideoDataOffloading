@@ -74,7 +74,7 @@ public class FileServiceImpl implements FileService {
         }
 
         try (InputStream inStream = new FileInputStream(file);
-             OutputStream outStream = new FileOutputStream(filePath + "/" + UUID.randomUUID())) {
+             OutputStream outStream = new FileOutputStream(filePath + "/" + filename)) {
 
             byte[] buffer = new byte[1024];
             int bytesRead;
