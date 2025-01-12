@@ -113,6 +113,18 @@ public class DyServiceImpl implements TempleteService {
 //                    By.xpath("//*[contains(text(),'作品未见异常')]"), "作品未见异常"));
 //            System.out.println("提示：作品未见异常");
 
+            //模拟人为操作 =》 随机点击页面 体部/页面边缘
+            Random random = new Random();
+            int randomNumber = random.nextInt(2);
+            WebElement body = null;
+            if(randomNumber == 0){
+                body = driver.findElement(By.tagName("body"));
+            } else if (randomNumber == 1) {
+                body = driver.findElement(By.tagName("html"));
+            }
+            body.click();
+            System.out.println("body / html 已点击");
+
             // 点击发布按钮
             WebElement publishButton = driver.findElement(By.xpath("//button[contains(text(),'发布')]"));
             publishButton.click();
