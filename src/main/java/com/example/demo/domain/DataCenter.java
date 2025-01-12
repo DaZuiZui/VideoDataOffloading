@@ -1,7 +1,9 @@
 package com.example.demo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,7 +14,9 @@ import java.util.Map;
  */
 public class DataCenter implements Serializable {
     /**
-     * 用户ID：
+     * 当前用户ID里的数据：
+     *
+     *    todo: 把map名字换成userData
      *
      *    name: Name[String]             名字
      *    douyinNumber: Number[Intger]   抖音中国所管理的账号数量
