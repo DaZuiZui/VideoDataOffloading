@@ -28,6 +28,7 @@
     data() {
       return {
         hotlist: [],
+        turnOn: 1
       };
     },
   
@@ -37,7 +38,7 @@
   
     methods: {
       fetchHotlist() {
-        getPopularVideos().then((res) => {
+        getPopularVideos(this.turnOn).then((res) => {
           console.log(res.data.data, "obj");
           this.hotlist = res.data.data;
         });

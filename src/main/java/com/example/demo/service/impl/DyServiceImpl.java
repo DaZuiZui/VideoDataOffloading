@@ -170,6 +170,7 @@ public class DyServiceImpl implements TempleteService {
             if (!hotData.isEmpty() && ((new Date().getTime() - hotData.keySet().iterator().next().getTime()) / (60 * 1000)) < 5) {
                 Date uniqueKey = hotData.keySet().iterator().next();
                 hotList = hotData.get(uniqueKey);
+                System.out.println("执行了缓存");
             } else {
                 // 找到包含热点信息的主容器
                 WebElement listContainer = webDriver.findElement(By.className("list-container"));

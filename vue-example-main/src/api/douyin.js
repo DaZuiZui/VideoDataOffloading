@@ -55,10 +55,13 @@ export function start(data){
  * 获取热门话题
  * @returns
  */
-export function getPopularVideos(){
+export function getPopularVideos(turnOn){
     return http({
         url: "/api/douyin/getPopularVideos",
         method: "get",
+        params: {
+            turnOn: turnOn
+        }
     })
 }
 

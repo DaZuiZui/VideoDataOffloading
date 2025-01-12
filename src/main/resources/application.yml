@@ -1,9 +1,9 @@
 config:
   # 文件保存路径
-  FilePath: D:/微创-项目/VideoDataOffloading/src/main/resources/file/user
+  FilePath: /Users/yangyida/Downloads/VideoDataOffloading/src/main/resources/file/user
   # 浏览器驾驶驱动信息
   BrowserDriveInfo: webdriver.gecko.driver
   # 浏览器驾驶驱动存储地址
-  BrowserDrivePath: D:\\enviromment\\fixbox-qd\\geckodriver.exe
+  BrowserDrivePath: /Users/yangyida/Downloads/geckodriver
   # 浏览器位置
-  BrowserPath: C:\\Program Files\\Mozilla Firefox\\firefox.exe
+  BrowserPath: /Applications/Firefox.app/Contents/MacOS/firefox
