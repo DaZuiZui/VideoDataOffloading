@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface TempleteService {
     public R login(Integer id);
 
-    public R publishAVideo(Integer id);
+    public R publishAVideo(Integer id,String path);
 
     public R getHotTopicByDouyinId(Integer id);
 

@@ -29,11 +29,12 @@ public class DouyinController {
     /**
      * 抖音发布视频
      * @param id
+     * @param path
      * @return
      */
     @GetMapping("/publishAVideo")
-    public R publishAVideo(@RequestParam("id")Integer id){
-        dyService.publishAVideo(id);
+    public R publishAVideo(@RequestParam("id")Integer id,@RequestParam("path")String path){
+        dyService.publishAVideo(id,path);
         return R.ok();
     }
 

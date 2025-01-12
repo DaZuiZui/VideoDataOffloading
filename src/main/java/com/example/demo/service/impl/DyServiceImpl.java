@@ -64,7 +64,7 @@ public class DyServiceImpl implements TempleteService {
      * @return
      */
     @Override
-    public R publishAVideo(Integer id) {
+    public R publishAVideo(Integer id,String path) {
         WebDriver driver = WebDriverUtils.get(id);
         String originalHandle = driver.getWindowHandle();
 
@@ -90,7 +90,8 @@ public class DyServiceImpl implements TempleteService {
             // 上传文件
             WebElement uploadInput = driver.findElement(By.xpath("//input[@type='file']"));
             ((JavascriptExecutor) driver).executeScript("arguments[0].style.display = 'block';", uploadInput);
-            String filePath = "/Users/yangyida/Documents/testima.mp4";
+            //String filePath = "/Users/yangyida/Documents/testima.mp4";
+            String filePath = path;
             uploadInput.sendKeys(filePath);
             System.out.println("文件路径已设置：" + filePath);
 
@@ -330,7 +331,7 @@ public class DyServiceImpl implements TempleteService {
 
     /**
      * 获取工作账号列表
-     * todo 为null的时候会报错，这里逻辑是有问题的
+     * todo 修复bug为null的时候会报错，这里逻辑是有问题的
      * @param id
      * @return
      */

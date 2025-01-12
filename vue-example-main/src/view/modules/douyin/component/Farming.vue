@@ -22,7 +22,7 @@
         <div v-for="(account, index) in accounts" :key="index" class="account-card">
           <img :src="account.avatarUrl" alt="头像" class="account-avatar" />
           <div class="account-info">
-            <p>任务编号:  {{ account.WebDriveID }}</p>
+            <p>任务编号:  {{ account.pcid }}</p>
             <p>标记:      {{ account.tmpname }}</p>
             <p>DouyinID: {{ account.id }}</p>
             <p>用户名: {{ account.username }}</p>
@@ -33,7 +33,7 @@
           </div>
           <div> 
             <div class="account-actions">
-                <button class="primary-btn" @click="publishVideoForAccount(account.id)">发布视频</button>
+                <button class="primary-btn" @click="uploadByWebdrive(account.pcid,account.id)">发布视频</button>
                 <button class="primary-btn" >作品管理</button>
                 <button class="primary-btn" >状态监测</button>
                 <button class="danger-btn" @click="deleteAccount(index)">删除</button>
@@ -70,19 +70,45 @@
           </div>
         </div>
       </div>
+
+            <!-- 弹出框 -->
+            <div class="modal" v-if="isModalOpenForUpload">
+                <div class="modal-content">
+                  <h2>视频发布</h2>
+                  <div class="modal-body">
+                    <label for="account-name" style="color: red;">文字介绍</label>
+                    <input
+                      id="account-name"
+                      type="text"
+                      v-model="onefilepath"
+                      placeholder="输入文件在服务器的物理地址"
+                    />
+、
+                  </div>
+                  <div class="modal-footer">
+                    <button class="primary-btn" @click="publishVideoForAccount()">Submit</button>
+                    <button class="secondary-btn" @click="closeModalForUpload()" >取消</button>
+                  </div>
+                </div>
+              </div>
     </div>
   </template>
   
   <script>
-  import { start, getFarmerInfo, loginForScan , getFarmerList } from "../../../../api/douyin.js";
+  import { start, getFarmerInfo, loginForScan , getFarmerList ,publishAVideo } from "../../../../api/douyin.js";
   export default {
     name: "App",
     data() {
       return {
+        isModalOpenForUpload: false, //上传文件文本框
         isModalOpen: false, // 控制弹出框是否显示
         newAccountName: "", // 存储用户输入的新账号名字
         accounts: [], // 存储账号信息
         WebDriveID: 0, //导航id
+
+        nowWebDriveId: -1, //现在所选择的视频导航id
+        nowDouyinId: "",   //现在使用的douyinid
+        onefilepath: "",       //单选视频连接
       };
     },
   
@@ -93,6 +119,21 @@
   
     
     methods: {
+        //关闭通关导航id上传文件模糊框
+        closeModalForUpload(){
+            this.nowWebDriveId = -1;
+            this.isModalOpenForUpload = false;
+            this.nowDouyinId = "";
+        },
+
+        //开启用户上传文件
+        uploadByWebdrive(id,douyin){
+            this.nowWebDriveId = id;
+            this.nowDouyinId = douyin;
+            this.isModalOpenForUpload = true;
+        },
+
+        //获取工作者账号列表
         getFarmerListFun(){
             console.log("??")
             getFarmerList().then(res=>{
@@ -189,8 +230,14 @@
       publishVideo() {
         alert("所有账号开始发布视频！");
       },
-      publishVideoForAccount(accountId) {
-        alert(`为账号 ${accountId} 发布视频！`);
+      publishVideoForAccount() {
+        alert("为账号 "+this.nowDouyinId+" 发布视频！");
+        publishAVideo({
+            id: this.nowWebDriveId,
+            path: this.onefilepath
+        }).then(res=>{
+            alert("ok");
+        })
       },
       deleteAccount(index) {
         this.accounts.splice(index, 1);

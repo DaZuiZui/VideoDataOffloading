@@ -63,6 +63,18 @@ export function getPopularVideos(){
 }
 
 
+
+/**
+ * 推送视频
+ */
+export function publishAVideo(data){
+    return http({
+        url: "/api/douyin/publishAVideo",
+        method: "get",
+        params: data
+    })
+}
+
 /**
  * 获取工作账号列表
  */

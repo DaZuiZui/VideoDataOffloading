@@ -16,7 +16,7 @@ public class WechatServiceImpl implements TempleteService {
     }
 
     @Override
-    public R publishAVideo(Integer id) {
+    public R publishAVideo(Integer id,String path) {
         return null;
     }
 
