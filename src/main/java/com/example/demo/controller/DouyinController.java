@@ -56,10 +56,11 @@ public class DouyinController {
      * https://www.iesdouyin.com/share/billboard/?id=0&utm_source=copy&utm_campaign=client_share&utm_medium=android&app=aweme
      * 目前是通关这个网站爬虫获取出来的，但是我不知道这个网站是否为抖音官方网站，大概率是的，
      * 如果有一天这个网站失效了那么就要参考 getHotTopicByDouyinId 来实现。
+     * @param turnOn  如果为0 那么就走智能模式，如果为1，那么就强制使用缓存
      * @return
      */
     @GetMapping("/getPopularVideos")
-    public R getPopularVideos(){
+    public R getPopularVideos(@RequestParam("turnOn") Integer turnOn ){
         R r = dyService.getPopularVideos();
         return r;
     }
@@ -90,7 +91,6 @@ public class DouyinController {
 
     /**
      * 获取工作账号列表
-     * todo: 存在bug 没有任务编号还有标记 优先级最高
      * @param id
      * @return
      */
