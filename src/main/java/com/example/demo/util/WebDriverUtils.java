@@ -5,20 +5,28 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class WebDriverUtils  {
+    @Value("${config.BrowserDriveInfo}")
+    public static String BrowserDriveInfo;
+    @Value("${config.BrowserDrivePath}")
+    public static String BrowserDrivePath;
+    @Value("${config.BrowserPath}")
+    public static String BrowserPath;
+
     public static HashMap<Integer,WebDriver> map = new HashMap<>();
     public static Integer id = 0;
     public static HashMap<String,Object> create(){
         id++;
         //todo 选择浏览器引擎
 
-        System.setProperty("webdriver.gecko.driver", "/Users/yangyida/Downloads/geckodriver");
-        FirefoxBinary firefoxBinary = new FirefoxBinary(new File("/Applications/Firefox.app/Contents/MacOS/firefox"));
+        System.setProperty(BrowserDriveInfo, BrowserDrivePath);
+        FirefoxBinary firefoxBinary = new FirefoxBinary(new File(BrowserPath));
         FirefoxOptions options = new FirefoxOptions();
         options.setBinary(firefoxBinary);
         // 使用已有的 Firefox 配置文件以复用会话

@@ -1,2 +1,9 @@
 config:
+  # 文件保存路径
   FilePath: /Users/yangyida/Downloads/VideoDataOffloading/src/main/resources/file/user
+  # 浏览器驾驶驱动信息
+  BrowserDriveInfo: webdriver.gecko.driver
+  # 浏览器驾驶驱动存储地址
+  BrowserDrivePath: /Users/yangyida/Downloads/geckodriver
+  # 浏览器位置
+  BrowserPath: /Applications/Firefox.app/Contents/MacOS/firefox
