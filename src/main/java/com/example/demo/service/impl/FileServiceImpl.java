@@ -83,7 +83,7 @@ public class FileServiceImpl implements FileService {
                 outStream.write(buffer, 0, bytesRead);
             }
 
-            return R.ok("下载成功");
+            return R.ok(outStream);
 
         } catch (IOException e) {
             e.printStackTrace();

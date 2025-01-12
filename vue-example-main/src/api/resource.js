@@ -26,6 +26,9 @@ export function downFile(data) {
   return http({
     url: "/api/file/downFile",
     method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data", // 确保请求头是multipart/form-data
+    },
     data: data,
   });
 }

@@ -18,14 +18,17 @@
             <li v-for="obj in filelist" :key="obj.title" class="filelist-item">
                 <span class="file-title">{{ obj.name }}</span>
                 <span class="file-number">{{ obj.file }}</span>
+                <!-- 复制路径按钮（绿色） -->
                 <button @click="copyPath(obj.file)" class="copy-btn">复制路径</button>
+                <!-- 下载文件按钮（蓝色） -->
+                <button @click="downloadFile(obj.name)" class="primary-btn">下载文件</button>
             </li>
         </ul>
     </div>
 </template>
 
 <script>
-import { getFileListByUserId, upload } from "../../../../api/resource.js";
+import { getFileListByUserId, upload, downFile } from "../../../../api/resource.js";
 
 export default {
     name: "App",
@@ -95,6 +98,24 @@ export default {
                 alert('该浏览器不支持复制到剪贴板功能！');
             }
         },
+        //文件下载
+        downloadFile(filename) {
+            const formData = new FormData();
+            formData.append("filename", filename);
+
+            downFile(formData).then(response => {
+                const blob = new Blob([response.data]);
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = filename; // 设置文件下载名称
+                link.click(); // 触发下载
+                alert('下载成功')
+            })
+                .catch(error => {
+                    alert("文件下载失败！");
+                    console.error(error);
+                });
+        }
     },
 };
 </script>
@@ -123,16 +144,17 @@ export default {
     margin-bottom: 10px;
 }
 
-/* 上传按钮样式 */
+/* 上传按钮样式（蓝色） */
 .primary-btn {
     background-color: #007bff;
     color: white;
-    padding: 10px 20px;
+    padding: 5px 1px;
     border: none;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
+    min-width: 80px;
 }
 
 .primary-btn:hover {
@@ -176,15 +198,19 @@ export default {
     margin-left: 10px;
 }
 
+/* 复制按钮样式（绿色） */
 .copy-btn {
     background-color: #28a745;
     color: white;
     border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 14px;
+    padding: 5px 1px;
+    /* 使按钮大小一致 */
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
+    min-width: 80px;
+    /* 确保大小一致 */
 }
 
 .copy-btn:hover {
@@ -200,7 +226,8 @@ export default {
     margin-top: 20px;
 }
 
-.actions .primary-btn {
+.actions .primary-btn,
+.actions .copy-btn {
     min-width: 160px;
 }
 </style>
