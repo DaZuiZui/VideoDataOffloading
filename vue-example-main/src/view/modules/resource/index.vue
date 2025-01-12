@@ -3,7 +3,6 @@
         <!-- 顶部组件 -->
         <Top></Top>
 
-
         <!-- 主布局 -->
         <div class="main-layout">
             <!-- 左侧导航 -->
@@ -11,8 +10,15 @@
 
             <!-- 内容区域 -->
             <div class="content">
+                <!-- 导航区域 -->
+                <div class="nav">
+                    <a href="#" :class="{ active: openTemplate === 0 }" @click.prevent="openTemplate = 0">
+                        视频资源管理
+                    </a>
+                </div>
+
                 <transition name="fade">
-                    <VideoManage></VideoManage>
+                    <VideoManage v-if="openTemplate === 0"></VideoManage>
                 </transition>
             </div>
         </div>
@@ -34,6 +40,7 @@ export default {
     },
     data() {
         return {
+            openTemplate: 0,    // 控制顶部导航内容
             activeLeftNav: 0    // 控制左侧导航内容
         };
     }
