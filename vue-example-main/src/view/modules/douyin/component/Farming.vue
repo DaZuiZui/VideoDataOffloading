@@ -57,7 +57,7 @@
           </label>
           <label for="account-name">请输入账号名字:<span style="color: red;">（不重要，让你自己标识用的）</span> </label>
           <input id="account-name" type="text" v-model="newAccountName" placeholder="输入名字" />
-          <img src="../../../../../static/image/pay/alipay.jpg" alt="示例图片" 
+          <img  src="https://via.placeholder.com/200" alt="示例图片" 
           class="example-image" v-if="qrCode === ''" />
           <img style="width: 200px;" v-if="qrCode" :src="qrCode" alt="QR Code" />
         </div>

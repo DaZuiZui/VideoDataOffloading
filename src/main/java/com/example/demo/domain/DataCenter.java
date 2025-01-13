@@ -31,6 +31,7 @@ public class DataCenter implements Serializable {
      *              0 抖音中国
      *              1 Tiktok
      *
+     *
      *         get => Map: {
      *             times: Date[Date time] 时间 基准香港时间，以服务器为准
      *             list:  array[
@@ -41,11 +42,5 @@ public class DataCenter implements Serializable {
      * }
      */
     public static Map<Integer, HashMap<String,Object>> HotData =new HashMap<>();
-//
-//    /**
-//     * key: 时间 =》 比较缓存数据是否超过归档时间
-//     * value =》 规定时间前的热门视频
-//     */
-//    public static Map<Date , List<Map<String, String>>> hotData = new HashMap<>();
 
 }

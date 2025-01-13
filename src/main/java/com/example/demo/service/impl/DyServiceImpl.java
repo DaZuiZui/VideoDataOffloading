@@ -61,9 +61,6 @@ public class DyServiceImpl implements TempleteService {
         // 获取二维码图片的 URL
         String qrCodeUrl = qrCodeElement.getAttribute("src");
 
-        // 输出二维码 URL
-        System.out.println("二维码的 URL: " + qrCodeUrl);
-
         //返回 qr
         return R.ok(qrCodeUrl);
     }
