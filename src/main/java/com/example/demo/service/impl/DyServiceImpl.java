@@ -387,6 +387,11 @@ public class DyServiceImpl implements TempleteService {
         return R.ok(list);
     }
 
+    /**
+     * 处理手机验证码
+     * @param id
+     * @return
+     */
     public R phoneJugeCode(Integer id) {
 
         WebDriver driver = WebDriverUtils.get(id);
@@ -413,31 +418,45 @@ public class DyServiceImpl implements TempleteService {
      * @return
      */
     public R phoneJugeTrueCode(Integer id, String code) {
+        System.out.println("验证码：" + code);
         WebDriver driver = WebDriverUtils.get(id);
         WebDriverWait wait = new WebDriverWait(driver, 10);
 
-        // 1. 定位到验证码输入框并输入验证码
-        WebElement codeInput = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='uc-ui-input_textbox']//input[@type='number']")));
-        codeInput.clear(); // 清空输入框
-        codeInput.sendKeys(code); // 输入验证码
-
-        // 2. 定位并点击提交按钮
-        WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@class, 'uc-ui-verify_sms-verify_button') and contains(@class, 'primary')]")));
-        submitButton.click(); // 点击提交按钮
-
-        // 3. 等待页面或弹窗中的验证码验证结果
         try {
+            // 1. 定位到验证码输入框并输入验证码
+            WebElement codeInput = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='uc-ui-input_textbox']//input[@type='number']")));
+
+            // 确保输入框可用且已清空
+            if (codeInput.isEnabled()) {
+                codeInput.clear(); // 清空输入框
+                codeInput.sendKeys(code); // 输入验证码
+            } else {
+                return R.fail("验证码输入框不可用");
+            }
+
+            // 2. 定位并点击提交按钮
+            WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@class, 'uc-ui-verify_sms-verify_button') and contains(@class, 'primary')]")));
+            submitButton.click(); // 点击提交按钮
+
+            // 3. 等待页面或弹窗中的验证码验证结果
             WebElement resultMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='verification_result_message']")));
             String resultText = resultMessage.getText();
 
+            // 检查验证结果
             if ("验证码正确".equals(resultText)) {
                 return R.ok("验证码正确");
             } else {
                 return R.fail("验证码错误");
             }
+
         } catch (TimeoutException e) {
             // 如果没有获取到结果消息，返回错误
+            System.out.println("验证码验证超时，页面或弹窗没有加载完成");
             return R.fail("验证码验证失败");
+        } catch (Exception e) {
+            // 捕获其他异常并记录
+            System.out.println("发生错误：" + e.getMessage());
+            return R.fail("验证码处理过程中发生错误");
         }
     }
 }

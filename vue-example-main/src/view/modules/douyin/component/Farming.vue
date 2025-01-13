@@ -88,7 +88,7 @@
 </template>
   
   <script>
-  import { start, getFarmerInfo, phoneJugeCode,loginForScan , getFarmerList ,publishAVideo } from "../../../../api/douyin.js";
+  import { start, getFarmerInfo, phoneJugeTrueCode, phoneJugeCode,loginForScan , getFarmerList ,publishAVideo } from "../../../../api/douyin.js";
   export default {
     name: "App",
     data() {
@@ -147,7 +147,7 @@
         // 处理手机短信验证
         await phoneJugeTrueCode({
           id: this.WebDriveID,code: this.phoneCode
-        }).then(res => {phoneJugeTrueCode
+        }).then(res => {
             alert(res.data.data.msg);
         });
       },
@@ -174,7 +174,8 @@
         // 处理手机短信验证
         await phoneJugeCode({
             id: this.WebDriveID,
-          }).then(res => {
+        }).then(res => {
+            console.log(res.data.data);
             if (res.data.data.code === 200) { 
               this.isShowCodeInput = true;
               this.qrCode = "0";
