@@ -62,7 +62,7 @@
           <img style="width: 200px;" v-if="qrCode" :src="qrCode" alt="QR Code" />
         </div>
         <div class="modal-footer">
-          <button class="primary-btn" @click="confirmAccount">我输入好了</button>
+          <button class="primary-btn" @click="confirmAccount" :disabled="loginDouyin">我输入好了</button>
           <button class="secondary-btn" @click="closeModal">取消</button>
         </div>
       </div>
@@ -92,12 +92,14 @@
     name: "App",
     data() {
       return {
+        loginDouyin: false, //抖音登入不可点击
+
         isModalOpenForUpload: false, //上传文件文本框
         isModalOpen: false, // 控制弹出框是否显示
         newAccountName: "", // 存储用户输入的新账号名字
         accounts: [], // 存储账号信息
         WebDriveID: 0, //导航id
-        qrCode: "", // 抖音扫码登陆二维码
+        qrCode: "https://via.placeholder.com/200", // 抖音扫码登陆二维码
         nowWebDriveId: -1, //现在所选择的视频导航id
         nowDouyinId: "",   //现在使用的douyinid
         onefilepath: "",       //单选视频连接
@@ -170,6 +172,9 @@
        *       点击我输入好了按钮应该只触发B组
        */
       async confirmAccount() {
+        this.loginDouyin = true;
+        this.qrCode = "https://via.placeholder.com/200";
+
         if (this.newAccountName.trim()) {
           let info = {
             tmpname: null,
@@ -216,7 +221,11 @@
         } else {
           alert("请输入账号名字！");
         }
+
+        this.loginDouyin = false;
       },
+
+      
       clearAccounts() {
         this.accounts = [];
         alert("已清除所有耕种账户！");
