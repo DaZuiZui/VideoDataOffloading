@@ -17,9 +17,9 @@ public class WebDriverUtils  {
 //    @Value("${config.BrowserDriveInfo}")
     public static String BrowserDriveInfo = "webdriver.gecko.driver";
 //    @Value("${config.BrowserDrivePath}")
-    public static String BrowserDrivePath = "/Users/yangyida/Downloads/geckodriver";
+    public static String BrowserDrivePath = "D:\\enviromment\\fixbox-qd\\geckodriver.exe";
 //    @Value("${config.BrowserPath}")
-    public static String BrowserPath = "/Applications/Firefox.app/Contents/MacOS/firefox";
+    public static String BrowserPath = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
 
     public static HashMap<Integer,WebDriver> map = new HashMap<>();
     public static Integer id = 0;
