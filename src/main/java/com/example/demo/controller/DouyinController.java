@@ -24,6 +24,28 @@ public class DouyinController {
     }
 
     /**
+     * 处理手机短信验证
+     * @param id
+     * @return
+     */
+    @GetMapping("/phoneJugeCode")
+    public R phoneJugeCode(@RequestParam("id")Integer id){
+        R phoneJugeCode = dyService.phoneJugeCode(id);
+        return R.ok(phoneJugeCode);
+    }
+
+    /**
+     * 验证手机短信验证码是否正确
+     * @param id
+     * @return
+     */
+    @GetMapping("/phoneJugeTrueCode")
+    public R phoneJugeTrueCode(@RequestParam("id")Integer id,@RequestParam("code")String code){
+        R phoneJugeTrueCode = dyService.phoneJugeTrueCode(id,code);
+        return R.ok(phoneJugeTrueCode);
+    }
+
+    /**
      * 抖音发布视频
      * @param id
      * @param path

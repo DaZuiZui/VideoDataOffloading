@@ -6,10 +6,7 @@ import com.example.demo.domain.FarmerInfo;
 import com.example.demo.domain.R;
 import com.example.demo.service.TempleteService;
 import com.example.demo.util.WebDriverUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -388,5 +385,59 @@ public class DyServiceImpl implements TempleteService {
 
         ArrayList<FarmerInfo> list = (ArrayList<FarmerInfo>) DataCenter.map.get(userId).get("douyinList");
         return R.ok(list);
+    }
+
+    public R phoneJugeCode(Integer id) {
+
+        WebDriver driver = WebDriverUtils.get(id);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+
+        try {
+            // 尝试使用 WebDriverWait 等待元素可点击
+            WebElement smsOption = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//p[text()='接收短信验证']/parent::div")));
+            smsOption.click();
+
+            WebElement sendCode = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//p[text()='获取验证码']/parent::div")));
+            sendCode.click(); // 点击获取验证码
+        } catch (TimeoutException e) {
+            return R.fail("获取验证码超时");
+        }
+
+        return R.ok();
+    }
+
+    /**
+     * 验证验证码是否正确
+     * @param id
+     * @param code
+     * @return
+     */
+    public R phoneJugeTrueCode(Integer id, String code) {
+        WebDriver driver = WebDriverUtils.get(id);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        // 1. 定位到验证码输入框并输入验证码
+        WebElement codeInput = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='uc-ui-input_textbox']//input[@type='number']")));
+        codeInput.clear(); // 清空输入框
+        codeInput.sendKeys(code); // 输入验证码
+
+        // 2. 定位并点击提交按钮
+        WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@class, 'uc-ui-verify_sms-verify_button') and contains(@class, 'primary')]")));
+        submitButton.click(); // 点击提交按钮
+
+        // 3. 等待页面或弹窗中的验证码验证结果
+        try {
+            WebElement resultMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='verification_result_message']")));
+            String resultText = resultMessage.getText();
+
+            if ("验证码正确".equals(resultText)) {
+                return R.ok("验证码正确");
+            } else {
+                return R.fail("验证码错误");
+            }
+        } catch (TimeoutException e) {
+            // 如果没有获取到结果消息，返回错误
+            return R.fail("验证码验证失败");
+        }
     }
 }

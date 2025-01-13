@@ -57,9 +57,10 @@
           </label>
           <label for="account-name">请输入账号名字:<span style="color: red;">（不重要，让你自己标识用的）</span> </label>
           <input id="account-name" type="text" v-model="newAccountName" placeholder="输入名字" />
-          <img src="../../../../../static/image/pay/alipay.jpg" alt="示例图片" 
-          class="example-image" v-if="qrCode === ''" />
+          <img src="../../../../../static/image/pay/alipay.jpg" alt="示例图片" class="example-image" v-if="qrCode === ''" />
           <img style="width: 200px;" v-if="qrCode" :src="qrCode" alt="QR Code" />
+          <input style="width: 200px;" type="text" v-show="isShowCodeInput" v-model="phoneCode" placeholder="输入验证码" />
+          <button class="primary-btn" v-show="isShowCodeInput" @click="judeCode">校验</button>
         </div>
         <div class="modal-footer">
           <button class="primary-btn" @click="confirmAccount">我输入好了</button>
@@ -87,7 +88,7 @@
 </template>
   
   <script>
-  import { start, getFarmerInfo, loginForScan , getFarmerList ,publishAVideo } from "../../../../api/douyin.js";
+  import { start, getFarmerInfo, phoneJugeCode,loginForScan , getFarmerList ,publishAVideo } from "../../../../api/douyin.js";
   export default {
     name: "App",
     data() {
@@ -98,6 +99,8 @@
         accounts: [], // 存储账号信息
         WebDriveID: 0, //导航id
         qrCode: "", // 抖音扫码登陆二维码
+        isShowCodeInput: false, // 是否显示输入手机验证码的输入框
+        phoneCode: "", // 存储用户输入的手机验证码
         nowWebDriveId: -1, //现在所选择的视频导航id
         nowDouyinId: "",   //现在使用的douyinid
         onefilepath: "",       //单选视频连接
@@ -138,6 +141,16 @@
       getUserDouYinData() {
         // 这里可以加载已有账号的数据
       },
+
+      //校验手机验证码是否正确
+      async judeCode() { 
+        // 处理手机短信验证
+        await phoneJugeTrueCode({
+          id: this.WebDriveID,code: this.phoneCode
+        }).then(res => {phoneJugeTrueCode
+            alert(res.data.data.msg);
+        });
+      },
   
       async openModal() {
         this.isModalOpen = true;
@@ -157,6 +170,17 @@
           }).then(res => {
             this.qrCode = res.data.data.data;
           });
+
+        // 处理手机短信验证
+        await phoneJugeCode({
+            id: this.WebDriveID,
+          }).then(res => {
+            if (res.data.data.code === 200) { 
+              this.isShowCodeInput = true;
+              this.qrCode = "0";
+            } 
+          });
+
       },
       closeModal() {
         this.isModalOpen = false;
