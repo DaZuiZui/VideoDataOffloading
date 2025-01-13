@@ -10,6 +10,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,7 @@ public class DyServiceImpl implements TempleteService {
     public R login(Integer id) {
         WebDriver driver = WebDriverUtils.get(id);
 
-        //获取当前会话的句柄
+        // 获取当前会话的句柄
         String originalHandle = driver.getWindowHandle();
 
         // 打开新标签页
@@ -51,7 +53,19 @@ public class DyServiceImpl implements TempleteService {
         // 在新标签页中打开目标页面
         driver.get("https://creator.douyin.com/");
         System.out.println("已在新标签页中打开页面：https://creator.douyin.com/");
-        return R.ok("scan this code");
+
+        // 等待二维码图片加载
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement qrCodeElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div.qrcode-image-QrGzx7 img")));
+
+        // 获取二维码图片的 URL
+        String qrCodeUrl = qrCodeElement.getAttribute("src");
+
+        // 输出二维码 URL
+        System.out.println("二维码的 URL: " + qrCodeUrl);
+
+        //返回 qr
+        return R.ok(qrCodeUrl);
     }
 
 

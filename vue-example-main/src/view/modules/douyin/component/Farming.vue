@@ -1,100 +1,90 @@
 <template>
-    <div id="app" class="farming-page">
-      <!-- 标题和操作按钮 -->
-      <div class="header">
-        <h1>抖音农田耕种</h1>
-        <span style="color: red;"> <b>通知：</b> 单账号数据分析已经并入作品管理 </span>
-        <div class="actions">
-          <button class="primary-btn"   @click="openModal">开启新的抖音账号进行耕种</button>
-          <button class="danger-btn"    @click="clearAccounts">清除所有耕种账户</button>
-          <button class="primary-btn"   @click="publishVideo">批量发布视频</button>
-          <button class="secondary-btn" @click="testAccounts">账号状态测试</button>
-          <button class="secondary-btn"  >消息列表</button>
-        </div>
+  <div id="app" class="farming-page">
+    <!-- 标题和操作按钮 -->
+    <div class="header">
+      <h1>抖音农田耕种</h1>
+      <span style="color: red;"> <b>通知：</b> 单账号数据分析已经并入作品管理 </span>
+      <div class="actions">
+        <button class="primary-btn" @click="openModal">开启新的抖音账号进行耕种</button>
+        <button class="danger-btn" @click="clearAccounts">清除所有耕种账户</button>
+        <button class="primary-btn" @click="publishVideo">批量发布视频</button>
+        <button class="secondary-btn" @click="testAccounts">账号状态测试</button>
+        <button class="secondary-btn">消息列表</button>
       </div>
-  
-      <!-- 账号数量 -->
-      <div class="account-count">
-        <p>目前我所管理的账号数量: {{ accounts.length }}</p>
-      </div>
-  
-      <!-- 账号列表 -->
-      <div class="account-list">
-        <div v-for="(account, index) in accounts" :key="index" class="account-card">
-          <img :src="account.avatarUrl" alt="头像" class="account-avatar" />
-          <div class="account-info">
-            <p>任务编号:  {{ account.pcid }}</p>
-            <p>标记:      {{ account.tmpname }}</p>
-            <p>DouyinID: {{ account.id }}</p>
-            <p>用户名: {{ account.username }}</p>
-            <p>个性签名: {{ account.signature }}</p>
-            <p>订阅量: {{ account.followingCount }}</p>
-            <p>粉丝数: {{ account.fansCount }}</p>
-            <p>获赞数: {{ account.likeCount }}</p>
-          </div>
-          <div> 
-            <div class="account-actions">
-                <button class="primary-btn" @click="uploadByWebdrive(account.pcid,account.id)">发布视频</button>
-                <button class="primary-btn" >作品管理</button>
-                <button class="primary-btn" >状态监测</button>
-                <button class="primary-btn" >消息</button>
-                <button class="danger-btn" @click="deleteAccount(index)">删除</button>
-                <button class="secondary-btn" @click="reloginAccount(account.id)">重新登入</button>
-            </div>
-        </div>
- 
-        </div>
-      </div>
-  
-      <!-- 弹出框 -->
-      <div class="modal" v-if="isModalOpen">
-        <div class="modal-content">
-          <h2>开启新的抖音账号</h2>
-          <div class="modal-body">
-            <label for="account-name" style="color: red;">这里的流程应该是弹出一个二维码，然后让用户去扫描登入，扫描好后点我输入好了按钮，然后进行登入判断还有风控判断。但是现在时间紧急直接让用户在服务端扫码登入。正常商业角度来说服务端不会给用户扫描的，会封装一层到客户端扫描</label>
-            <label for="account-name" style="color: red;">我没有想好一个很好的处理方案，我觉得如果在这里让用户在输入好他的抖音号，那么我开发层面是不是可以节省更多的业务开发？ </label>
-            <label for="account-name">请输入账号名字:<span style="color: red;">（不重要，让你自己标识用的）</span> </label>
-            <input
-              id="account-name"
-              type="text"
-              v-model="newAccountName"
-              placeholder="输入名字"
-            />
-            <img
-              src="https://via.placeholder.com/200"
-              alt="示例图片"
-              class="example-image"
-            />
-          </div>
-          <div class="modal-footer">
-            <button class="primary-btn" @click="confirmAccount">我输入好了</button>
-            <button class="secondary-btn" @click="closeModal">取消</button>
-          </div>
-        </div>
-      </div>
-
-            <!-- 弹出框 -->
-            <div class="modal" v-if="isModalOpenForUpload">
-                <div class="modal-content">
-                  <h2>视频发布</h2>
-                  <div class="modal-body">
-                    <label for="account-name" style="color: red;">文字介绍</label>
-                    <input
-                      id="account-name"
-                      type="text"
-                      v-model="onefilepath"
-                      placeholder="输入文件在服务器的物理地址"
-                    />
-、
-                  </div>
-                  <div class="modal-footer">
-                    <button class="primary-btn" @click="publishVideoForAccount()">Submit</button>
-                    <button class="secondary-btn" @click="closeModalForUpload()" >取消</button>
-                  </div>
-                </div>
-              </div>
     </div>
-  </template>
+
+    <!-- 账号数量 -->
+    <div class="account-count">
+      <p>目前我所管理的账号数量: {{ accounts.length }}</p>
+    </div>
+
+    <!-- 账号列表 -->
+    <div class="account-list">
+      <div v-for="(account, index) in accounts" :key="index" class="account-card">
+        <img :src="account.avatarUrl" alt="头像" class="account-avatar" />
+        <div class="account-info">
+          <p>任务编号: {{ account.pcid }}</p>
+          <p>标记: {{ account.tmpname }}</p>
+          <p>DouyinID: {{ account.id }}</p>
+          <p>用户名: {{ account.username }}</p>
+          <p>个性签名: {{ account.signature }}</p>
+          <p>订阅量: {{ account.followingCount }}</p>
+          <p>粉丝数: {{ account.fansCount }}</p>
+          <p>获赞数: {{ account.likeCount }}</p>
+        </div>
+        <div>
+          <div class="account-actions">
+            <button class="primary-btn" @click="uploadByWebdrive(account.pcid,account.id)">发布视频</button>
+            <button class="primary-btn">作品管理</button>
+            <button class="primary-btn">状态监测</button>
+            <button class="primary-btn">消息</button>
+            <button class="danger-btn" @click="deleteAccount(index)">删除</button>
+            <button class="secondary-btn" @click="reloginAccount(account.id)">重新登入</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 弹出框 -->
+    <div class="modal" v-if="isModalOpen">
+      <div class="modal-content">
+        <h2>开启新的抖音账号</h2>
+        <div class="modal-body">
+          <label for="account-name"
+            style="color: red;">这里的流程应该是弹出一个二维码，然后让用户去扫描登入，扫描好后点我输入好了按钮，然后进行登入判断还有风控判断。但是现在时间紧急直接让用户在服务端扫码登入。正常商业角度来说服务端不会给用户扫描的，会封装一层到客户端扫描</label>
+          <label for="account-name" style="color: red;">我没有想好一个很好的处理方案，我觉得如果在这里让用户在输入好他的抖音号，那么我开发层面是不是可以节省更多的业务开发？
+          </label>
+          <label for="account-name">请输入账号名字:<span style="color: red;">（不重要，让你自己标识用的）</span> </label>
+          <input id="account-name" type="text" v-model="newAccountName" placeholder="输入名字" />
+          <img src="../../../../../static/image/pay/alipay.jpg" alt="示例图片" 
+          class="example-image" v-if="qrCode === ''" />
+          <img style="width: 200px;" v-if="qrCode" :src="qrCode" alt="QR Code" />
+        </div>
+        <div class="modal-footer">
+          <button class="primary-btn" @click="confirmAccount">我输入好了</button>
+          <button class="secondary-btn" @click="closeModal">取消</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 弹出框 -->
+    <div class="modal" v-if="isModalOpenForUpload">
+      <div class="modal-content">
+        <h2>视频发布</h2>
+        <div class="modal-body">
+          <label for="account-name" style="color: red;">文字介绍</label>
+          <input id="account-name" type="text" v-model="onefilepath" placeholder="输入文件在服务器的物理地址" />
+          、
+        </div>
+        <div class="modal-footer">
+          <button class="primary-btn" @click="publishVideoForAccount()">Submit</button>
+          <button class="secondary-btn" @click="closeModalForUpload()">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
   
   <script>
   import { start, getFarmerInfo, loginForScan , getFarmerList ,publishAVideo } from "../../../../api/douyin.js";
@@ -107,7 +97,7 @@
         newAccountName: "", // 存储用户输入的新账号名字
         accounts: [], // 存储账号信息
         WebDriveID: 0, //导航id
-
+        qrCode: "", // 抖音扫码登陆二维码
         nowWebDriveId: -1, //现在所选择的视频导航id
         nowDouyinId: "",   //现在使用的douyinid
         onefilepath: "",       //单选视频连接
@@ -164,8 +154,8 @@
           // 登入抖音
           await loginForScan({
             id: this.WebDriveID,
-          }).then(res=>{
-
+          }).then(res => {
+            this.qrCode = res.data.data.data;
           });
       },
       closeModal() {
