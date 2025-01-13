@@ -1,4 +1,4 @@
-![QQ_1736779492781](https://github.com/user-attachments/assets/dedc7225-31b4-46dc-ad6e-38f4fe863264)![QQ_1736779473125](https://github.com/user-attachments/assets/fde6d2df-4add-43e6-a93a-fc76144f6460)# VideoDataOffloading
+# VideoDataOffloading
 自媒体数据分流，目前支持抖音 视频矩阵功能。在未来会支持 数据分流，智能分析，引流等。
 
 如果你觉得我的产品对你有帮助，请赞助我，我将会有持续更新的动力。
