@@ -32,6 +32,32 @@ export function loginForScan(data) {
 }
 
 /**
+ * 处理手机短信验证
+ * @param {*} data
+ * @returns
+ */
+export function phoneJugeCode(data) {
+  return http({
+    url: "/api/douyin/phoneJugeCode",
+    method: "get",
+    params: data,
+  });
+}
+
+/**
+ * 验证手机短信验证
+ * @param {*} data
+ * @returns
+ */
+export function phoneJugeTrueCode(data) {
+  return http({
+    url: "/api/douyin/phoneJugeTrueCode",
+    method: "get",
+    params: data,
+  });
+}
+
+/**
  * 开启新的浏览器会话开启新的账户
  * @param {*} data
  * @returns
