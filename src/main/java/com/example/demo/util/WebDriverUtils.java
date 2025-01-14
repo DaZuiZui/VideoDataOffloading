@@ -13,17 +13,18 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 //@Component
-public class WebDriverUtils  {
-//    @Value("${config.BrowserDriveInfo}")
+public class WebDriverUtils {
+    //    @Value("${config.BrowserDriveInfo}")
     public static String BrowserDriveInfo = "webdriver.gecko.driver";
-//    @Value("${config.BrowserDrivePath}")
-    public static String BrowserDrivePath = "D:\\enviromment\\fixbox-qd\\geckodriver.exe";
-//    @Value("${config.BrowserPath}")
-    public static String BrowserPath = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
+    //    @Value("${config.BrowserDrivePath}")
+    public static String BrowserDrivePath = "/Users/yangyida/Downloads/geckodriver";
+    //    @Value("${config.BrowserPath}")
+    public static String BrowserPath = "/Applications/Firefox.app/Contents/MacOS/firefox";
 
-    public static HashMap<Integer,WebDriver> map = new HashMap<>();
+    public static HashMap<Integer, WebDriver> map = new HashMap<>();
     public static Integer id = 0;
-    public static HashMap<String,Object> create(){
+
+    public static HashMap<String, Object> create() {
         id++;
         //todo 选择浏览器引擎
 
@@ -38,19 +39,19 @@ public class WebDriverUtils  {
 //        options.setProfile(profile);
 
 
-        WebDriver driver =  new FirefoxDriver(options);
+        WebDriver driver = new FirefoxDriver(options);
         driver = new FirefoxDriver(options);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
-        map.put(id,driver);
+        map.put(id, driver);
 //        System.err.println("浏览器已启动，加载配置文件：" + userProfilePath);
-        HashMap<String,Object> res = new HashMap<>();
-        res.put("id",id);
-        res.put("obj",driver);
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("id", id);
+        res.put("obj", driver);
         return res;
     }
 
-    public static WebDriver get(Integer id){
+    public static WebDriver get(Integer id) {
         WebDriver webDriver = map.get(id);
         if (webDriver == null) {
             return null;
