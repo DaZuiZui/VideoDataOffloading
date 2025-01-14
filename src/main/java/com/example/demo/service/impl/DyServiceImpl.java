@@ -26,6 +26,7 @@ public class DyServiceImpl implements TempleteService {
      * 抖音扫码登入，但是这里有一个问题，如果是正常使用的模式不应该让用户看到机器操作的页面，但是目前扫码是通关在机器的页面扫码，
      * todo 所以在未来，我们需要改进这个方案，将登入二维码传到输客户端让用户在客户端扫码，
      * todo 如果该账户被风控但是扫码成功后会出现一个接受短信验证码，所以我们还要做风控的处理页面。
+     *
      * @param id
      * @return
      */
@@ -66,18 +67,18 @@ public class DyServiceImpl implements TempleteService {
     }
 
 
-
     /**
      * 发布视频，
-     *      但是目前有一个问题，就是遇见风控了，需要再次扫码，但是目前我还没有写检测这个风控的逻辑，暂时先放一下。
-     *      而且抖音有防机器人检测，如果被检测为机器人那么就会被返回home页面，
+     * 但是目前有一个问题，就是遇见风控了，需要再次扫码，但是目前我还没有写检测这个风控的逻辑，暂时先放一下。
+     * 而且抖音有防机器人检测，如果被检测为机器人那么就会被返回home页面，
      *          todo 所以需要编写一些随机事件去避免机器人检测
      *          或者视频够短足够快，在他没有检测出来就发布（目前采用此方案，但是不可靠，时间紧以后再说）
+     *
      * @param id
      * @return
      */
     @Override
-    public R publishAVideo(Integer id,String path) {
+    public R publishAVideo(Integer id, String path) {
         WebDriver driver = WebDriverUtils.get(id);
         String originalHandle = driver.getWindowHandle();
 
@@ -162,7 +163,7 @@ public class DyServiceImpl implements TempleteService {
      * @return
      */
     @Override
-    public R getPopularVideos(){
+    public R getPopularVideos() {
 
         try {
             // 存储热点信息的列表
@@ -178,13 +179,13 @@ public class DyServiceImpl implements TempleteService {
                 if ((date1.getTime() - times.getTime()) >= 2 * 60 * 1000) {
                     System.out.println("两个时间的时差大于或等于 2 分钟");
                 } else {
-                    System.out.println("两个时间的时差小于 2 分钟"+date1+"  and  "+times + "当前时差"+(date1.getTime() - times.getTime()));
+                    System.out.println("两个时间的时差小于 2 分钟" + date1 + "  and  " + times + "当前时差" + (date1.getTime() - times.getTime()));
                     cacheToken = true;
                 }
             }
 
 
-            if ( cacheToken ) {
+            if (cacheToken) {
                 hotList = (List<Map<String, String>>) DataCenter.HotData.get(ApplicationId.Douyin).get("list");
                 System.out.println("执行了缓存");
             } else {
@@ -226,13 +227,12 @@ public class DyServiceImpl implements TempleteService {
                     hotList.add(hotMap);
 
                     HashMap<String, Object> cacheMap = new HashMap<>();
-                    cacheMap.put("times",new Date());
-                    cacheMap.put("list",hotList);
-                    DataCenter.HotData.put(ApplicationId.Douyin,cacheMap);
+                    cacheMap.put("times", new Date());
+                    cacheMap.put("list", hotList);
+                    DataCenter.HotData.put(ApplicationId.Douyin, cacheMap);
                 }
                 webDriver.quit();
             }
-
 
 
             // 返回成功结果
@@ -261,15 +261,15 @@ public class DyServiceImpl implements TempleteService {
     }
 
 
-
     /**
      * 获取账号信息
      * todo:存在bug，获取喜欢数和关注一样多 需要修复
+     *
      * @param id
      * @return
      */
     @Override
-    public R getFarmerInfo(@RequestParam("id") Integer id,@RequestParam("PCID")Integer PCID,@RequestParam("name")String name) {
+    public R getFarmerInfo(@RequestParam("id") Integer id, @RequestParam("PCID") Integer PCID, @RequestParam("name") String name) {
         // 从 WebDriverUtils 工具类获取 WebDriver 实例
         WebDriver webDriver = WebDriverUtils.get(id);
 
@@ -347,8 +347,8 @@ public class DyServiceImpl implements TempleteService {
 
             farmerInfo.setPCID(PCID.toString());
             farmerInfo.setTmpname(name);
-            HashMap<String ,Object> res = new HashMap<>();
-            res.put("farmerInfo",farmerInfo);
+            HashMap<String, Object> res = new HashMap<>();
+            res.put("farmerInfo", farmerInfo);
 
             //这里会确保在这里使用的时候已经进行初始化了
             ArrayList<FarmerInfo> list = (ArrayList<FarmerInfo>) DataCenter.map.get(userId).get("douyinList");
@@ -371,6 +371,7 @@ public class DyServiceImpl implements TempleteService {
     /**
      * 获取工作账号列表
      * todo 修复bug为null的时候会报错，这里逻辑是有问题的
+     *
      * @param id
      * @return
      */
@@ -389,6 +390,7 @@ public class DyServiceImpl implements TempleteService {
 
     /**
      * 处理手机验证码
+     *
      * @param id
      * @return
      */
@@ -413,6 +415,7 @@ public class DyServiceImpl implements TempleteService {
 
     /**
      * 验证验证码是否正确
+     *
      * @param id
      * @param code
      * @return
@@ -425,6 +428,7 @@ public class DyServiceImpl implements TempleteService {
         try {
             // 1. 定位到验证码输入框并输入验证码
             WebElement codeInput = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='uc-ui-input_textbox']//input[@type='number']")));
+            System.out.println("定位验证码输入框执行");
 
             // 确保输入框可用且已清空
             if (codeInput.isEnabled()) {
@@ -435,19 +439,25 @@ public class DyServiceImpl implements TempleteService {
             }
 
             // 2. 定位并点击提交按钮
-            WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@class, 'uc-ui-verify_sms-verify_button') and contains(@class, 'primary')]")));
-            submitButton.click(); // 点击提交按钮
+            WebElement submitButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(@class, 'uc-ui-verify_sms-verify_button') and contains(@class, 'primary') and not(contains(@class, 'disabled')) and contains(text(), '验证')]")));
+            submitButton.click();
+            System.out.println("定位并点击提交按钮: 验证");
+
+            //跳转前url
+            String initialUrl = driver.getCurrentUrl();
 
             // 3. 等待页面或弹窗中的验证码验证结果
-            WebElement resultMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='verification_result_message']")));
-            String resultText = resultMessage.getText();
-
-            // 检查验证结果
-            if ("验证码正确".equals(resultText)) {
+            if (driver.findElement(By.xpath("//p[contains(@class, 'uc-ui-verify_error')]")) != null) {
+                WebElement resultMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[contains(@class, 'uc-ui-verify_error')]")));
+                String resultText = resultMessage.getText();
+                if ("验证码错误，请重新输入".equals(resultText)) {
+                    System.out.println("错误提示信息: " + resultText);
+                    return R.fail("验证码错误");
+                }
                 return R.ok("验证码正确");
-            } else {
-                return R.fail("验证码错误");
             }
+
+            return R.ok("验证码正确");
 
         } catch (TimeoutException e) {
             // 如果没有获取到结果消息，返回错误

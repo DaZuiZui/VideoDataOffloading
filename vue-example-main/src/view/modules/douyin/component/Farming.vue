@@ -150,7 +150,7 @@ export default {
       await phoneJugeTrueCode({
         id: this.WebDriveID, code: this.phoneCode
       }).then(res => {
-        alert(res.data.data.msg);
+          alert(res.data.data.msg);
       });
     },
 
@@ -177,7 +177,6 @@ export default {
       await phoneJugeCode({
         id: this.WebDriveID,
       }).then(res => {
-        console.log(res.data.data);
         if (res.data.data.code === 200) {
           this.isShowCodeInput = true;
           this.qrCode = "0";
@@ -187,7 +186,9 @@ export default {
     },
     closeModal() {
       this.isModalOpen = false;
+      this.isShowCodeInput = false;
       this.newAccountName = ""; // 清空输入框
+      this.phoneCode = "";//置空手机验证码
     },
 
     /**
@@ -243,6 +244,8 @@ export default {
 
         this.accounts.push(info);
         this.closeModal();
+        this.isShowCodeInput = false;//关闭手机验证码输入框
+        this.phoneCode = "";//置空手机验证码
       } else {
         alert("请输入账号名字！");
       }
