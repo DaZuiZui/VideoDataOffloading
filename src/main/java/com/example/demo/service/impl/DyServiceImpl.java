@@ -443,26 +443,27 @@ public class DyServiceImpl implements TempleteService {
             submitButton.click();
             System.out.println("定位并点击提交按钮: 验证");
 
-            //跳转前url
-            String initialUrl = driver.getCurrentUrl();
-
             // 3. 等待页面或弹窗中的验证码验证结果
-            if (driver.findElement(By.xpath("//p[contains(@class, 'uc-ui-verify_error')]")) != null) {
-                WebElement resultMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[contains(@class, 'uc-ui-verify_error')]")));
+            // 使用 findElements() 检查元素是否存在
+            List<WebElement> resultMessageList = driver.findElements(By.xpath("//p[contains(@class, 'uc-ui-verify_error')]"));
+
+            if (!resultMessageList.isEmpty()) {
+                WebElement resultMessage = wait.until(ExpectedConditions.visibilityOf(resultMessageList.get(0)));
                 String resultText = resultMessage.getText();
+
                 if ("验证码错误，请重新输入".equals(resultText)) {
                     System.out.println("错误提示信息: " + resultText);
                     return R.fail("验证码错误");
                 }
                 return R.ok("验证码正确");
+            } else {
+                // 如果元素不存在，则直接跳过等待，或者返回默认值
+                return R.ok("验证码正确");
             }
-
-            return R.ok("验证码正确");
-
         } catch (TimeoutException e) {
             // 如果没有获取到结果消息，返回错误
             System.out.println("验证码验证超时，页面或弹窗没有加载完成");
-            return R.fail("验证码验证失败");
+            return R.fail("验证码验证成功");
         } catch (Exception e) {
             // 捕获其他异常并记录
             System.out.println("发生错误：" + e.getMessage());

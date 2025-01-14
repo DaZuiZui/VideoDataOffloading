@@ -58,7 +58,7 @@
           <label for="account-name">请输入账号名字:<span style="color: red;">（不重要，让你自己标识用的）</span> </label>
           <input id="account-name" type="text" v-model="newAccountName" placeholder="输入名字" />
           <img src="https://via.placeholder.com/200" alt="示例图片" class="example-image" v-if="qrCode === ''" />
-          <img style="width: 200px;" v-if="qrCode" :src="qrCode" alt="QR Code" />
+          <img style="width: 200px;" v-if="qrCode && qrCode != '0'" :src="qrCode" alt="QR Code" />
           <input style="width: 200px;" type="text" v-show="isShowCodeInput" v-model="phoneCode" placeholder="输入验证码" />
           <button class="primary-btn" v-show="isShowCodeInput" @click="judeCode">校验</button>
         </div>
@@ -150,7 +150,7 @@ export default {
       await phoneJugeTrueCode({
         id: this.WebDriveID, code: this.phoneCode
       }).then(res => {
-          alert(res.data.data.msg);
+            alert(res.data.data.msg);
       });
     },
 
@@ -187,6 +187,7 @@ export default {
     closeModal() {
       this.isModalOpen = false;
       this.isShowCodeInput = false;
+      this.qrCode = "";
       this.newAccountName = ""; // 清空输入框
       this.phoneCode = "";//置空手机验证码
     },
