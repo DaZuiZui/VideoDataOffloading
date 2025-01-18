@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.R;
+import com.example.demo.domain.bo.DouYinStreamliningBo;
 import com.example.demo.service.impl.DyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/douyin")
@@ -87,11 +90,10 @@ public class DouyinController {
 
     /**
      * 抖音流水化工作 watting 资源本地化开发完毕
-     * todo:
      * @return
      */
     @GetMapping("/streamlining")
-    public R streamlining(){
+    public R streamlining(@RequestBody List<DouYinStreamliningBo> list){
         return R.ok();
     }
 
@@ -120,5 +122,5 @@ public class DouyinController {
     }
 
 
-    
+
 }

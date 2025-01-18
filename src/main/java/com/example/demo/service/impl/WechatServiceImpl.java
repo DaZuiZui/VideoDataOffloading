@@ -1,8 +1,11 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.domain.R;
+import com.example.demo.domain.bo.DouYinStreamliningBo;
 import com.example.demo.service.TempleteService;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 public class WechatServiceImpl implements TempleteService {
     @Override
@@ -12,6 +15,11 @@ public class WechatServiceImpl implements TempleteService {
 
     @Override
     public R getFarmerList(Integer id) {
+        return null;
+    }
+
+    @Override
+    public R streamlining(List<DouYinStreamliningBo> list) {
         return null;
     }
 

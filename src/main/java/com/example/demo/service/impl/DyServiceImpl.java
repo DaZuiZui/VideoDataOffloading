@@ -4,6 +4,7 @@ import com.example.demo.domain.ApplicationId;
 import com.example.demo.domain.DataCenter;
 import com.example.demo.domain.FarmerInfo;
 import com.example.demo.domain.R;
+import com.example.demo.domain.bo.DouYinStreamliningBo;
 import com.example.demo.service.TempleteService;
 import com.example.demo.util.WebDriverUtils;
 import org.openqa.selenium.*;
@@ -12,6 +13,8 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
@@ -21,6 +24,22 @@ import java.util.*;
 public class DyServiceImpl implements TempleteService {
 
     private static Long userId = 1L;
+
+    /**
+     * 抖音流水化工作 watting 资源本地化开发完毕
+     * @return
+     */
+    @Override
+    public R streamlining(@RequestBody List<DouYinStreamliningBo> list){
+        for (DouYinStreamliningBo douYinStreamliningBo : list) {
+            Integer pcid = douYinStreamliningBo.getPcid();
+            String path = douYinStreamliningBo.getPath();
+            //发布视频
+            this.publishAVideo(pcid,path);
+        }
+
+        return R.ok();
+    }
 
     /**
      * 抖音扫码登入，但是这里有一个问题，如果是正常使用的模式不应该让用户看到机器操作的页面，但是目前扫码是通关在机器的页面扫码，

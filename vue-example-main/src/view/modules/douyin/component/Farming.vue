@@ -7,7 +7,7 @@
       <div class="actions">
         <button class="primary-btn" @click="openModal">开启新的抖音账号进行耕种</button>
         <button class="danger-btn" @click="clearAccounts">清除所有耕种账户</button>
-        <button class="primary-btn" @click="publishVideo">批量发布视频</button>
+        <button class="primary-btn" @click="batchpublishvideosModalOpen">批量发布视频</button>
         <button class="secondary-btn" @click="testAccounts">账号状态测试</button>
         <button class="secondary-btn">消息列表</button>
       </div>
@@ -15,7 +15,7 @@
 
     <!-- 账号数量 -->
     <div class="account-count">
-      <p>目前我所管理的账号数量: {{ accounts.length }}</p>
+      <p>目前我所管理的账号数量: {{ accounts.length }} 我的粉丝量: 0 , follows:0 , like : 0</p>  
     </div>
 
     <!-- 账号列表 -->
@@ -45,6 +45,30 @@
 
       </div>
     </div>
+
+        <!-- 批量发布视频 弹出框 -->
+        <div class="modal" v-if="isBatchpublishvideosModalOpen">
+          <div class="modal-content">
+            <h2>Batch publish videos</h2>
+            <div class="modal-body">
+              <div v-for="obj in accounts">
+                  {{ obj.tmpname }}
+              </div>
+
+
+              <label for="account-name">:<span style="color: red;">（不重要，让你自己标识用的）</span> </label>
+              <input id="account-name" type="text" v-model="newAccountName" placeholder="输入名字" />
+              <img src="https://via.placeholder.com/200" alt="示例图片" class="example-image" v-if="qrCode === ''" />
+              <img style="width: 200px;" v-if="qrCode && qrCode != '0'" :src="qrCode" alt="QR Code" />
+              <input style="width: 200px;" type="text" v-show="isShowCodeInput" v-model="phoneCode" placeholder="输入验证码" />
+              <button class="primary-btn" v-show="isShowCodeInput" @click="judeCode">校验</button>
+            </div>
+            <div class="modal-footer">
+              <button class="primary-btn" @click="confirmAccount" :disabled="loginDouyin">我输入好了</button>
+              <button class="secondary-btn" @click="closebatchpublishvideosModal">取消</button>
+            </div>
+          </div>
+        </div>
 
     <!-- 弹出框 -->
     <div class="modal" v-if="isModalOpen">
@@ -93,6 +117,9 @@ export default {
   name: "App",
   data() {
     return {
+      //批量发布视频
+      isBatchpublishvideosModalOpen: false, 
+
       loginDouyin: false, //抖音登入不可点击
 
       isModalOpenForUpload: false, //上传文件文本框
@@ -116,6 +143,15 @@ export default {
 
 
   methods: {
+    //关闭批量上传
+    closebatchpublishvideosModal(){
+      this.isBatchpublishvideosModalOpen = false;
+    },
+    //批量上传接口
+    batchpublishvideosModalOpen() {
+        this.isBatchpublishvideosModalOpen = true;
+    },
+
     //关闭通关导航id上传文件模糊框
     closeModalForUpload() {
       this.nowWebDriveId = -1;
