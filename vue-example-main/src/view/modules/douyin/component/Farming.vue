@@ -62,7 +62,7 @@
           <input 
             id="account-name" 
             type="text" 
-            v-model="formInputs[index].name" 
+            v-model="formInputs[index].path" 
             placeholder="输入名字" 
           />
         </div>
@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import { start, getFarmerInfo, phoneJugeTrueCode, phoneJugeCode, loginForScan, getFarmerList, publishAVideo } from "../../../../api/douyin.js";
+import { streamlining , start, getFarmerInfo, phoneJugeTrueCode, phoneJugeCode, loginForScan, getFarmerList, publishAVideo } from "../../../../api/douyin.js";
 export default {
   name: "App",
   data() {
@@ -161,6 +161,11 @@ export default {
   methods: {
     batchUploadVideos() {
       console.log(this.formInputs);
+      streamlining(this.formInputs).then(res=>{
+          console.log(res);
+      })
+
+
       // formInputs 包含每个账户的 pcid 和输入的名字
     },
   
@@ -194,7 +199,7 @@ export default {
 
       await getFarmerList().then(res => {
         this.accounts = res.data.data;
-        this.formInputs = this.accounts.map(obj => ({ pcid: obj.pcid, name: '' }));
+        this.formInputs = this.accounts.map(obj => ({ pcid: obj.pcid, path: '' }));
         console.log( this.accounts," this.accounts ")
         console.log( this.formInputs," this.formInputs ")
       });

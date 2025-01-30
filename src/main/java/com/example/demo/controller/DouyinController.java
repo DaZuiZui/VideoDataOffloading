@@ -92,9 +92,10 @@ public class DouyinController {
      * 抖音流水化工作 watting 资源本地化开发完毕
      * @return
      */
-    @GetMapping("/streamlining")
+    @PostMapping("/streamlining")
     public R streamlining(@RequestBody List<DouYinStreamliningBo> list){
-        return this.streamlining(list);
+        System.err.println(list);
+        return dyService.streamlining(list);
     }
 
 

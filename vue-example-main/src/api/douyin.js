@@ -104,3 +104,16 @@ export function getFarmerList() {
     method: "get",
   });
 }
+
+
+/**
+ * 流水线工作
+ * @returns 
+ */
+export function streamlining(data){
+  return http({
+    url: "/api/douyin/streamlining",
+    method: "post",
+    data: data
+  });
+}
