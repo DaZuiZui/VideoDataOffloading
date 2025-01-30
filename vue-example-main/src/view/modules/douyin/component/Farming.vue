@@ -47,28 +47,33 @@
     </div>
 
         <!-- 批量发布视频 弹出框 -->
-        <div class="modal" v-if="isBatchpublishvideosModalOpen">
-          <div class="modal-content">
-            <h2>Batch publish videos</h2>
-            <div class="modal-body">
-              <div v-for="obj in accounts">
-                  {{ obj.tmpname }}
-              </div>
-
-
-              <label for="account-name">:<span style="color: red;">（不重要，让你自己标识用的）</span> </label>
-              <input id="account-name" type="text" v-model="newAccountName" placeholder="输入名字" />
-              <img src="https://via.placeholder.com/200" alt="示例图片" class="example-image" v-if="qrCode === ''" />
-              <img style="width: 200px;" v-if="qrCode && qrCode != '0'" :src="qrCode" alt="QR Code" />
-              <input style="width: 200px;" type="text" v-show="isShowCodeInput" v-model="phoneCode" placeholder="输入验证码" />
-              <button class="primary-btn" v-show="isShowCodeInput" @click="judeCode">校验</button>
-            </div>
-            <div class="modal-footer">
-              <button class="primary-btn" @click="confirmAccount" :disabled="loginDouyin">我输入好了</button>
-              <button class="secondary-btn" @click="closebatchpublishvideosModal">取消</button>
-            </div>
-          </div>
+<!-- 批量发布视频 弹出框 -->
+<div class="modal" v-if="isBatchpublishvideosModalOpen">
+  <div class="modal-content">
+    <h2>Batch publish videos</h2>
+    <div class="modal-body">
+      <div v-for="(obj, index) in accounts" :key="index">
+        <div v-if="obj != null">
+          <label for="account-name">
+            <span style="color: red;">
+              标识:{{ obj.tmpname }} 导航id:{{ obj.pcid }} 抖音号: {{ obj.DouyinID }}
+            </span>
+          </label>
+          <input 
+            id="account-name" 
+            type="text" 
+            v-model="formInputs[index].name" 
+            placeholder="输入名字" 
+          />
         </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="primary-btn" @click="batchUploadVideos">我输入好了</button>
+      <button class="secondary-btn" @click="closebatchpublishvideosModal">取消</button>
+    </div>
+  </div>
+</div>
 
     <!-- 弹出框 -->
     <div class="modal" v-if="isModalOpen">
@@ -79,11 +84,14 @@
             style="color: red;">这里的流程应该是弹出一个二维码，然后让用户去扫描登入，扫描好后点我输入好了按钮，然后进行登入判断还有风控判断。但是现在时间紧急直接让用户在服务端扫码登入。正常商业角度来说服务端不会给用户扫描的，会封装一层到客户端扫描</label>
           <label for="account-name" style="color: red;">我没有想好一个很好的处理方案，我觉得如果在这里让用户在输入好他的抖音号，那么我开发层面是不是可以节省更多的业务开发？
           </label>
-          <label for="account-name">请输入账号名字:<span style="color: red;">（不重要，让你自己标识用的）</span> </label>
+          <label style="text-align: left;" for="account-name">请输入账号名字:<span style="color: red;">（不重要，让你自己标识用的）</span>
+          </label>
           <input id="account-name" type="text" v-model="newAccountName" placeholder="输入名字" />
           <img src="https://via.placeholder.com/200" alt="示例图片" class="example-image" v-if="qrCode === ''" />
           <img style="width: 200px;" v-if="qrCode && qrCode != '0'" :src="qrCode" alt="QR Code" />
-          <input style="width: 200px;" type="text" v-show="isShowCodeInput" v-model="phoneCode" placeholder="输入验证码" />
+          <label style="text-align: left;" v-show="isShowCodeInput" for="account-name">请输入验证码:<span
+              style="color: red;">（验证码应为6位，点击校验查看验证码是否输入正确奥~）</span> </label>
+          <input style="width: 200px;" v-show="isShowCodeInput" type="text" v-model="phoneCode" placeholder="输入验证码" />
           <button class="primary-btn" v-show="isShowCodeInput" @click="judeCode">校验</button>
         </div>
         <div class="modal-footer">
@@ -100,7 +108,7 @@
         <div class="modal-body">
           <label for="account-name" style="color: red;">文字介绍</label>
           <input id="account-name" type="text" v-model="onefilepath" placeholder="输入文件在服务器的物理地址" />
-          、
+      
         </div>
         <div class="modal-footer">
           <button class="primary-btn" @click="publishVideoForAccount()">Submit</button>
@@ -117,6 +125,9 @@ export default {
   name: "App",
   data() {
     return {
+
+      formInputs: [], // 用于存储批量输入框的值
+
       //批量发布视频
       isBatchpublishvideosModalOpen: false, 
 
@@ -131,18 +142,28 @@ export default {
       isShowCodeInput: false, // 是否显示输入手机验证码的输入框
       phoneCode: "", // 存储用户输入的手机验证码
       nowWebDriveId: -1, //现在所选择的视频导航id
+      intervalID: null,//定时器
       nowDouyinId: "",   //现在使用的douyinid
       onefilepath: "",       //单选视频连接
     };
   },
 
   mounted() {
+ 
+
     this.getUserDouYinData();
     this.getFarmerListFun();
+
+    console.log(this.formInputs,"qqq")
   },
 
 
   methods: {
+    batchUploadVideos() {
+      console.log(this.formInputs);
+      // formInputs 包含每个账户的 pcid 和输入的名字
+    },
+  
     //关闭批量上传
     closebatchpublishvideosModal(){
       this.isBatchpublishvideosModalOpen = false;
@@ -167,11 +188,18 @@ export default {
     },
 
     //获取工作者账号列表
-    getFarmerListFun() {
+    async getFarmerListFun() {
+ 
       console.log("??")
-      getFarmerList().then(res => {
+
+      await getFarmerList().then(res => {
         this.accounts = res.data.data;
+        this.formInputs = this.accounts.map(obj => ({ pcid: obj.pcid, name: '' }));
+        console.log( this.accounts," this.accounts ")
+        console.log( this.formInputs," this.formInputs ")
       });
+ 
+      
     },
     /**
      * 获取抖音用户数据
@@ -200,39 +228,67 @@ export default {
     async openModal() {
       this.isModalOpen = true;
 
-      //获取二维码准备工作
-      // 启动浏览器
-      await start({
-        name: "tmp",
-        type: 1,
-      }).then((res) => {
-        this.WebDriveID = res.data.data;
-      });
-
-      // 登入抖音
-      await loginForScan({
-        id: this.WebDriveID,
-      }).then(res => {
-        this.qrCode = res.data.data.data;
-      });
+      // 判断是否显示验证码输入框
+      if (this.isShowCodeInput === false) {
+        // 每隔55秒调用
+        this.intervalID = setInterval(async () => {
+          await this.refreshQRCode(); 
+        }, 55000); 
+        await this.refreshQRCode();
+      }
 
       // 处理手机短信验证
       await phoneJugeCode({
         id: this.WebDriveID,
       }).then(res => {
         if (res.data.data.code === 200) {
-          this.isShowCodeInput = true;
+          this.isShowCodeInput = true;//显示手机验证码输入ui
+          this.clearQRCodeInterval();//关闭定时器
           this.qrCode = "0";
         }
       });
-
     },
+
+    // 用于获取二维码并刷新
+    async refreshQRCode() {
+      try {
+        // 获取二维码准备工作
+        // 启动浏览器
+        await start({
+          name: "tmp",
+          type: 1,
+        }).then((res) => {
+          this.WebDriveID = res.data.data;
+        });
+
+        // 登入抖音
+        await loginForScan({
+          id: this.WebDriveID,
+        }).then(res => {
+          this.qrCode = res.data.data.data;
+        });
+
+        // alert("验证码刷新啦~"); //=>此处有延迟所以不建议提示 =》 抖音60s刷新一次 ，控制在55s更新一次验证码一般情况下不会有问题
+      } catch (error) {
+        console.error('获取二维码出错:', error);
+      }
+    },
+
+    // 当不再需要定时器时，记得清除定时器
+    clearQRCodeInterval() {
+      if (this.intervalID) {
+        clearInterval(this.intervalID);
+        this.intervalID = null;
+      }
+    },
+
     closeModal() {
       this.isModalOpen = false;
       this.isShowCodeInput = false;
       this.qrCode = "";
       this.newAccountName = ""; // 清空输入框
       this.phoneCode = "";//置空手机验证码
+      this.clearQRCodeInterval();//关闭定时器
     },
 
     /**
@@ -289,11 +345,12 @@ export default {
         this.accounts.push(info);
         this.closeModal();
         this.isShowCodeInput = false;//关闭手机验证码输入框
+        this.clearQRCodeInterval();//关闭定时器
         this.phoneCode = "";//置空手机验证码
       } else {
         alert("请输入账号名字！");
       }
-
+      this.formInputs = this.accounts.map(obj => ({ pcid: obj.pcid, name: '' }));
       this.loginDouyin = false;
     },
 

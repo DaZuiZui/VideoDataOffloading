@@ -94,7 +94,7 @@ public class DouyinController {
      */
     @GetMapping("/streamlining")
     public R streamlining(@RequestBody List<DouYinStreamliningBo> list){
-        return R.ok();
+        return this.streamlining(list);
     }
 
 
