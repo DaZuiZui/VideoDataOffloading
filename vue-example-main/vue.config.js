@@ -50,36 +50,22 @@ module.exports = {
     productionSourceMap: false,
     publicPath: './', 
     outputDir: process.env.outputDir, // 生成文件的目录名称
-    chainWebpack: config => {
-
-        config.resolve.alias
-            .set('@', resolve('src'))
-
-        // 压缩图片
-        config.module
-            .rule('images')
-            .test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
-            .use('image-webpack-loader')
-            .loader('image-webpack-loader')
-            .options({ bypassOnDebug: true })
-
-        // webpack 会默认给commonChunk打进chunk-vendors，所以需要对webpack的配置进行delete
-        config.optimization.delete('splitChunks')
-
-        config.plugin('html').tap(args => {
-            if (process.env.NODE_ENV === 'production') {
-                args[0].cdn = cdn.build
+    module: {
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: ['@babel/preset-env'],
+                plugins: ['@babel/plugin-proposal-optional-chaining']
+              }
             }
-            if (process.env.NODE_ENV === 'development') {
-                args[0].cdn = cdn.dev
-            }
-            return args
-        })
-        
-        config
-            .plugin('webpack-bundle-analyzer')
-            .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
-    },
+          }
+        ]
+      },
+    
 
     configureWebpack: config => {
         const plugins = [];

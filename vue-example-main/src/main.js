@@ -8,7 +8,7 @@ import App from './App'
 import router from './router'
 import httpRquest from './utils/httpRequest'
  
-
+ 
 //全局挂载
 Vue.config.productionTip = false
 Vue.prototype.$http = httpRquest

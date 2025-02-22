@@ -68,8 +68,8 @@ public class DouyinController {
      */
     @GetMapping("/getHotTopicByDouyinId")
     public R getHotTopicByDouyinId(@RequestParam("id")Integer id){
-
-        return R.ok();
+        R hotTopicByDouyinId = dyService.getHotTopicByDouyinId(id);
+        return hotTopicByDouyinId;
     }
 
     /**
